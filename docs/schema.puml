@@ -1,0 +1,232 @@
+@startuml
+
+rectangle "Location" as location {
+    entity "City" as city {
+        id: int <<generated>>
+        --
+        name: varchar
+    }
+
+    entity "Country" as country {
+        id: int <<generated>>
+        --
+        name: varchar
+    }   
+}
+
+rectangle "Auth" as auth {
+    entity "User" as user {
+        id: int <<generated>>
+        --
+        city_id: int <<FK>>
+        first_name: varchar
+        last_name: varchar
+        nickname: varchar
+        email: varchar
+        password: varchar
+        card_number: bigint
+        language: enum
+        sex: enum
+        phone: bigint
+        birth_date: date
+        created_at: datetime
+    }
+}
+
+rectangle "News Letter" as news_letters {
+    entity "SMS News Letter" as sms_news_letter {
+        id: int <<generated>>
+        --
+        is_selective: boolean
+        description: text
+        status: enum
+    }
+
+    entity "Email News Letter" as email_news_letter {
+        id: int <<generated>>
+        --
+        template_id: int <<FK>>
+        is_selective: boolean
+        status: enum
+    }
+
+    entity "Template" as template {
+        id: int <<generated>>
+        --
+        name: varchar
+        url: varchar
+    }
+
+    template::id ||--|{ email_news_letter::template_id
+}
+
+rectangle "Movie Theater" as movie_theater {
+    entity "Movie Theater SEO" as movie_theater_seo {
+        id: int <<generated>>
+        --
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "Theater" as theater {
+        id: int <<generated>>
+        --
+        city_id: int <<FK>>
+        name: varchar
+        coordinates: point
+        description: text
+        logo_url: varchar 
+        banner_url: varchar
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "Theater Image" as theater_image {
+        id: int <<generated>>
+        --
+        theater_id: int <<FK>>
+        url: varchar
+    }
+
+    entity "Hall" as hall {
+        id: int <<generated>>
+        --
+        theater_id: int <<FK>>
+        number: smallint
+        description: text
+        scheme_url: varchar 
+        banner_url: varchar
+        rows: smallint
+        columns: smallint
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "Hall Image" as hall_image {
+        id: int <<generated>>
+        --
+        hall_id: int <<FK>>
+        url: varchar
+    }
+
+    entity "Seat" as seat {
+        id: int <<generated>>
+        --
+        hall_id: int <<FK>>
+        row: smallint
+        column: smallint
+        is_free: boolean
+    }
+
+    rectangle "Movie" as movie {
+        entity "Film" as film {
+            id: int <<generated>>
+            --
+            description: text
+            year: int
+            budget: int
+            age_limit: smallint
+            duration: smallint
+            image_url: varchar
+            trailer_url: varchar
+            type: enum
+            seo_url: varchar
+            seo_title: varchar
+            seo_keywords: varchar
+            seo_description: varchar
+        }
+
+        entity "Genre" as genre {
+            id: int <<generated>>
+            --
+            name: varchar
+        }
+        
+        entity "Person" as person {
+            id: int <<generated>>
+            --
+            first_name: varchar
+            last_name: varchar
+        }
+
+        entity "Compositor" as compositor {
+            id: int <<generated>>
+            --
+            person_id: int <<FK>>
+        }
+
+        entity "Producer" as producer {
+            id: int <<generated>>
+            --
+            person_id: int <<FK>>
+        }
+
+        entity "Director" as director {
+            id: int <<generated>>
+            --
+            person_id: int <<FK>>
+        }
+
+        entity "Scenarist" as scenarist {
+            id: int <<generated>>
+            --
+            person_id: int <<FK>>
+        }
+
+        entity "Operator" as operator {
+            id: int <<generated>>
+            --
+            person_id: int <<FK>>
+        }
+
+        film::id }|--|{ genre::id
+        film::id }o--|{ country::id
+        person::id ||--o| compositor::id
+        person::id ||--o| producer::id
+        person::id ||--o| director::id
+        person::id ||--o| scenarist::id
+        person::id ||--o| operator::id
+        film::id }|--|{ compositor::id
+        film::id }|--|{ producer::id
+        film::id }|--|{ director::id
+        film::id }|--|{ scenarist::id
+        film::id }|--|{ operator::id
+    }
+
+    entity "Session" as session {
+        id: int <<generated>>
+        --
+        film_id: int <<FK>>
+        hall_id: int <<FK>>
+        time: datetime
+    }
+
+    entity "Reservation" as reservation {
+        id: int <<generated>>
+        --
+        session_id: int <<FK>>
+        seat_id: int <<FK>>
+    }
+
+    theater::id ||--o{  theater_image::theater_id
+    theater::city_id }o--|| location.city::id
+    hall::theater_id }|--|| theater::id
+    hall_image::hall_id }o--|| hall::id
+    seat::hall_id }|--|| hall::id
+    session::film_id }o--o{ movie.film::id
+    session::hall_id }o--o{ hall::id
+    reservation::session_id }o--|| session::id
+    reservation::seat_id }o--|| seat::id
+}
+
+location.city::id ||--o{ auth.user::city_id
+auth.user::id }|--o{ news_letter.sms_news_letter::id
+auth.user::id }|--o{ news_letter.email_news_letter::id
+
+@enduml
