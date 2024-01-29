@@ -33,7 +33,7 @@ rectangle "Auth" as auth {
     }
 }
 
-rectangle "News Letter" as news_letters {
+rectangle "News Letter" as news_letter {
     entity "SMS News Letter" as sms_news_letter {
         id: int <<generated>>
         --
