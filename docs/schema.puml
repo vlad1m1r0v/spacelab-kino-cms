@@ -1,4 +1,4 @@
-@startuml
+@startuml Database Relationship Diagram
 
 rectangle "Location" as location {
     entity "City" as city {
@@ -21,7 +21,7 @@ rectangle "Auth" as auth {
         city_id: int <<FK>>
         first_name: varchar
         last_name: varchar
-        nickname: varchar
+        nick_name: varchar
         email: varchar
         password: varchar
         card_number: bigint
@@ -54,20 +54,28 @@ rectangle "News Letter" as news_letter {
         id: int <<generated>>
         --
         name: varchar
-        url: varchar
+        description: text
     }
 
     template::id ||--|{ email_news_letter::template_id
 }
 
 rectangle "Movie Theater" as movie_theater {
-    entity "Movie Theater SEO" as movie_theater_seo {
+    entity "Main Page SEO" as main_page_seo {
         id: int <<generated>>
         --
+        seo_description: text
         seo_url: varchar
         seo_title: varchar
         seo_keywords: varchar
         seo_description: varchar
+    }
+
+    entity "Main Page SEO phones" as main_page_seo_phones {
+        id: int <<generated>>
+        --
+        main_page_seo_id: int <<FK>>
+        number: bigint
     }
 
     entity "Theater" as theater {
@@ -79,6 +87,7 @@ rectangle "Movie Theater" as movie_theater {
         description: text
         logo_url: varchar 
         banner_url: varchar
+        contacts: jsonb
         seo_url: varchar
         seo_title: varchar
         seo_keywords: varchar
@@ -187,11 +196,13 @@ rectangle "Movie Theater" as movie_theater {
 
         film::id }|--|{ genre::id
         film::id }o--|{ country::id
+
         person::id ||--o| compositor::id
         person::id ||--o| producer::id
         person::id ||--o| director::id
         person::id ||--o| scenarist::id
         person::id ||--o| operator::id
+
         film::id }|--|{ compositor::id
         film::id }|--|{ producer::id
         film::id }|--|{ director::id
@@ -210,22 +221,165 @@ rectangle "Movie Theater" as movie_theater {
     entity "Reservation" as reservation {
         id: int <<generated>>
         --
+        user_id: int <<FK>>
         session_id: int <<FK>>
         seat_id: int <<FK>>
+        status: enum
     }
 
-    theater::id ||--o{  theater_image::theater_id
+    entity "Discount" as discount {
+        name: varchar
+        description: text
+        banner_url: varchar
+        video_url: varchar
+        is_active: boolean
+        created_at: date
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "Discount Image" as discount_image {
+        id: int <<generated>>
+        --
+        dicount_id: int <<FK>>
+        url: varchar
+    }
+
+    entity "News" as news {
+        id: int <<generated>>
+        --
+        name: varchar
+        description: text
+        banner_url: varchar
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "News Image" as news_image {
+        id: int <<generated>>
+        --
+        news_id: int <<FK>>
+        url: varchar
+    }
+
+    entity "Advertisement" as advertisement {
+        id: int <<generated>>
+        --
+        name: varchar
+        description: text
+        banner_url: varchar
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "Advertisement Image" as advertisement_image {
+        id: int <<generated>>
+        --
+        advertisement_id: int <<FK>>
+        url: varchar
+    }
+
+    entity "Cafe Bar" as cafe_bar {
+        id: int <<generated>>
+        --
+        theater_id: int <<FK>>
+        name: varchar
+        description: text
+        banner_url: varchar
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "Cafe Bar Image" as cafe_bar_image {
+        id: int <<generated>>
+        --
+        cofe_bar_id: int <<FK>>
+        url: varchar
+    }
+
+    entity "Vip Hall" as vip_hall {
+        id: int <<generated>>
+        --
+        theater_id: int <<FK>>
+        name: varchar
+        description: text
+        banner_url: varchar
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "Vip Hall Image" as vip_hall_image {
+        id: int <<generated>>
+        --
+        vip_hall_id: int <<FK>>
+        url: varchar
+    }
+
+    entity "Child Room" as child_room {
+        id: int <<generated>>
+        --
+        theater_id: int <<FK>>
+        name: varchar
+        description: text
+        banner_url: varchar
+        seo_url: varchar
+        seo_title: varchar
+        seo_keywords: varchar
+        seo_description: varchar
+    }
+
+    entity "Child Room Image" as child_room_image {
+        id: int <<generated>>
+        --
+        child_room_id: int <<FK>>
+        url: varchar
+    }
+
+    main_page_seo::id ||--o{ main_page_seo_phones::main_page_seo_id
+
+    theater_image::theater_id }o--|| theater::id
     theater::city_id }o--|| location.city::id
+
     hall::theater_id }|--|| theater::id
-    hall_image::hall_id }o--|| hall::id
+    hall_image::hall_id }|--|| hall::id
+
     seat::hall_id }|--|| hall::id
-    session::film_id }o--o{ movie.film::id
-    session::hall_id }o--o{ hall::id
+
+    session::film_id }o--|| movie.film::id
+    session::hall_id }o--|| hall::id
+
+    reservation::user_id }o--|| auth.user::id
     reservation::session_id }o--|| session::id
     reservation::seat_id }o--|| seat::id
+
+    discount_image::dicount_id }o--|| discount::id 
+
+    news_image::news_id }o--|| news::id
+
+    advertisement_image::advertisement_id }o--|| advertisement::id
+
+    cafe_bar::theater_id }o--|| theater::id
+    cafe_bar_image::cofe_bar_id }o--|| cafe_bar::id
+
+    vip_hall::theater_id }o--|| theater::id
+    vip_hall_image::vip_hall_id }o--|| vip_hall::id
+
+    child_room::theater_id }o--|| theater::id
+    child_room_image::child_room_id }o--|| child_room::id
 }
 
 location.city::id ||--o{ auth.user::city_id
+
 auth.user::id }|--o{ news_letter.sms_news_letter::id
 auth.user::id }|--o{ news_letter.email_news_letter::id
 
