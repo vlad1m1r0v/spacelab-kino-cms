@@ -18,7 +18,6 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 config = configparser.ConfigParser()
-print(os.path.join(BASE_DIR, "settings.ini"))
 config.read(os.path.join(BASE_DIR, "settings.ini"))
 
 # Quick-start development settings - unsuitable for production
