@@ -14,9 +14,7 @@ class LoginView(View):
         if form.is_valid():
             email = request.POST['email']
             password = request.POST['password']
-            print(email, password)
             user = authenticate(email=email, password=password)
-            print(user)
             if user:
                 login(request, user)
                 return redirect('/adminlte/dashboard')
