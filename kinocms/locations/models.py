@@ -3,8 +3,8 @@ from django.db import models
 
 
 class City(AbstractBaseModel):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=30)
 
 
 class Country(AbstractBaseModel):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=30)
