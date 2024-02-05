@@ -6,7 +6,7 @@ class LoginForm(Form):
     email = EmailField(
         label="Email",
         required=True,
-        widget=widgets.Input(attrs={"class": "form-control", "placeholder": "Enter email"}),
+        widget=widgets.Input(attrs={"class": "form-control", "placeholder": "Enter email", "type": "email"}),
     )
     password = CharField(
         label="Password",
