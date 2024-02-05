@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+  <!-- Toaster -->
+  <link rel="stylesheet" href="{% static 'plugins/toastr/toastr.min.css' %}">
+  <title>Login</title>
+</head>
+<body style="background-color:#f4f6f9">
+<!--Form-->
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+  <div class="card p-2" style="width: 20rem">
+    <form method="post">
+      {% csrf_token %}
+      {% for field in login_form %}
+        <div class="form-group">
+          <label for="{{ field.id_for_label }}" class="font-weight-normal">{{ field.label }}</label>
+          {{ field }}
+          {% for error in field.errors %}
+				    <small class="text-danger ml-1">{{ error }}</small>
+				  {% endfor %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
+  </div>
+</div>
+</body>
+<!-- jQuery -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+<script>
+  {% if messages %}
+    toastr.options = {
+      "debug": false,
+      "positionClass": "toast-bottom-left",
+      "onclick": null,
+      "fadeIn": 300,
+      "fadeOut": 1000,
+      "timeOut": 5000,
+      "extendedTimeOut": 1000,
+      "closeButton": true
+    }
+    {% for message in messages %}
+        toastr.error("{{message}}")
+    {% endfor %}
+  {% endif %}
+</script>
+</html>
