@@ -1,20 +1,15 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import redirect, render
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from django.contrib.auth import login, logout, authenticate
+
+from .decorators import admin_only
 from .forms import LoginForm
 
 
+@admin_only
 class DashboardView(TemplateView):
     template_name = "panel/dashboard.html"
-
-    @method_decorator(user_passes_test(lambda u: u.is_staff and u.is_superuser,
-                                       login_url="/adminlte/login",
-                                       redirect_field_name=None))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
 
 class LoginView(View):
