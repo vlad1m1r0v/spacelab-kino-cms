@@ -1,8 +1,6 @@
-from django.urls import path
-from .views import DashboardView, LoginView, LogoutView
+from django.urls import path, include
 
 urlpatterns = [
-    path("dashboard", DashboardView.as_view(), name="dashboard"),
-    path("login", LoginView.as_view(), name="login"),
-    path("logout", LogoutView.as_view(), name="logout")
+    path("authentication/", include("adminlte.urlpatterns.authentication", namespace="authentication")),
+    path("dashboard/", include("adminlte.urlpatterns.dashboard", namespace="dashboard"))
 ]

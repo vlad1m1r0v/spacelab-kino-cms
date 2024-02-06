@@ -10,7 +10,7 @@ def admin_only(cls):
 
     @method_decorator(user_passes_test(
         lambda u: u.is_staff and u.is_superuser,
-        login_url=reverse_lazy("login"),
+        login_url=reverse_lazy("authentication:login"),
         redirect_field_name=None
     ), name="dispatch")
     class AdminOnlyView(cls):

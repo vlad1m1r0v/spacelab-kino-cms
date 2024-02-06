@@ -59,7 +59,7 @@
         </span>
       </li>
       <li class="nav-item">
-        <form action="{% url 'logout' %}" method="post">
+        <form action="{% url 'authentication:logout' %}" method="post">
           {% csrf_token %}
           <button type="submit" class="btn btn-outline-primary btn-block">Logout</button>
         </form>

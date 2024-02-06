@@ -1,15 +1,9 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from django.views.generic import TemplateView, View
+from django.views.generic import View
 from django.contrib.auth import login, logout, authenticate
 
-from .decorators import admin_only
-from .forms import LoginForm
-
-
-@admin_only
-class DashboardView(TemplateView):
-    template_name = "panel/dashboard.html"
+from adminlte.forms.authentication import LoginForm
 
 
 class LoginView(View):
@@ -22,7 +16,7 @@ class LoginView(View):
             user = authenticate(email=email, password=password, is_superuser=True)
             if user:
                 login(request, user)
-                return redirect("dashboard")
+                return redirect("dashboard:index")
             else:
                 messages.error(request, "Incorrect email or password")
         template = "authentication/login.html"
@@ -40,4 +34,4 @@ class LogoutView(View):
     @staticmethod
     def post(request):
         logout(request)
-        return redirect("/adminlte/login")
+        return redirect("authentication:login")
