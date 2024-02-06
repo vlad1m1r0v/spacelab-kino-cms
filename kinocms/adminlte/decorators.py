@@ -4,10 +4,6 @@ from django.utils.decorators import method_decorator
 
 
 def admin_only(cls):
-    """
-    Decorator for class-based views that checks that the user is an admin.
-    """
-
     @method_decorator(user_passes_test(
         lambda u: u.is_staff and u.is_superuser,
         login_url=reverse_lazy("authentication:login"),
