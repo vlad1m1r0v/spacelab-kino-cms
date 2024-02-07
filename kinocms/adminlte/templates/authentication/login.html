@@ -21,7 +21,7 @@
   <div class="card p-2" style="width: 20rem">
     <form id="login-form" method="post" novalidate="novalidate" autocomplete="off">
       {% csrf_token %}
-      {% for field in login_form %}
+      {% for field in form %}
         <div class="form-group">
           <label for="{{ field.id_for_label }}" class="font-weight-normal">{{ field.label }}</label>
           {{ field }}
@@ -43,13 +43,7 @@
 <script>
   {% if messages %}
     toastr.options = {
-      "debug": false,
       "positionClass": "toast-bottom-left",
-      "onclick": null,
-      "fadeIn": 300,
-      "fadeOut": 1000,
-      "timeOut": 5000,
-      "extendedTimeOut": 1000,
       "closeButton": true
     }
     {% for message in messages %}

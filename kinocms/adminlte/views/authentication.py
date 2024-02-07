@@ -1,14 +1,15 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render
-from django.views.generic import View
+from django.shortcuts import redirect
+from django.views.generic import TemplateView, View
 from django.contrib.auth import login, logout, authenticate
 
 from adminlte.forms.authentication import LoginForm
 
 
-class LoginView(View):
-    @staticmethod
-    def post(request):
+class LoginView(TemplateView):
+    template_name = "authentication/login.html"
+
+    def post(self, request):
         form = LoginForm(request.POST)
         if form.is_valid():
             email = request.POST["email"]
@@ -19,15 +20,13 @@ class LoginView(View):
                 return redirect("dashboard:index")
             else:
                 messages.error(request, "Incorrect email or password")
-        template = "authentication/login.html"
-        context = {"login_form": form}
-        return render(request, template, context)
+        context = {"form": form}
+        return self.render_to_response(context=context)
 
-    @staticmethod
-    def get(request):
-        template = "authentication/login.html"
-        context = {"login_form": LoginForm()}
-        return render(request, template, context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = LoginForm()
+        return context
 
 
 class LogoutView(View):
