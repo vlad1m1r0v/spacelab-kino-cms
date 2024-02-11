@@ -11,8 +11,6 @@
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempus dominus Bootstrap 4 -->
     <link rel="stylesheet"
           href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
@@ -96,10 +94,18 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{% url 'dashboard:index' %}" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Dashboard
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'banners:index' %}" class="nav-link">
+                            <i class="nav-icon fas fa-layer-group"></i>
+                            <p>
+                                Banners
                             </p>
                         </a>
                     </li>
@@ -147,6 +153,18 @@
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
     $.widget.bridge('uibutton', $.ui.button)
+</script>
+<script>
+    $(document).ready(function () {
+        const currentPath = window.location.pathname;
+        $('.nav-item a').each(function () {
+            const linkPath = $(this).attr('href');
+            console.log(currentPath, linkPath)
+            if (linkPath === currentPath) {
+                $(this).addClass('active');
+            }
+        });
+    });
 </script>
 <!-- Bootstrap 4 -->
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
