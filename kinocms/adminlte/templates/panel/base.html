@@ -191,10 +191,10 @@
 <script>
     $(document).ready(function () {
         const currentPath = window.location.pathname;
-        <!--Assign title a name of current page-->
+        //Assign title a name of current page
         const [first, ...others] = currentPath.split('/')[2];
         document.title = first.toUpperCase().concat(...others);
-        <!--Highlight active link-->
+        //Highlight active link
         $('.nav-item a').each(function () {
             const linkPath = $(this).attr('href');
             if (linkPath === currentPath) $(this).addClass('active');
