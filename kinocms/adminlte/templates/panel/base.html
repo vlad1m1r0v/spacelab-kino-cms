@@ -159,10 +159,7 @@
         const currentPath = window.location.pathname;
         $('.nav-item a').each(function () {
             const linkPath = $(this).attr('href');
-            console.log(currentPath, linkPath)
-            if (linkPath === currentPath) {
-                $(this).addClass('active');
-            }
+            if (linkPath === currentPath) $(this).addClass('active');
         });
     });
 </script>
