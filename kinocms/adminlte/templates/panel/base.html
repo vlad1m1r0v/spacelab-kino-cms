@@ -4,7 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Panel</title>
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -26,39 +29,10 @@
     <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">
     <!-- summernote -->
     <link rel="stylesheet" href="{% static 'plugins/summernote/summernote-bs4.min.css' %}">
-    <style>
-        .scrolling-wrapper {
-            overflow-x: scroll;
-            white-space: nowrap;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .scrolling-wrapper::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
-        }
-
-        .scrolling-wrapper .card {
-            display: inline-block;
-        }
-
-        .btn-circle {
-            width: 20px;
-            height: 20px;
-            padding: 4px 0;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 12px;
-            line-height: 0.95238;
-        }
-
-        .btn-corner {
-            position: absolute;
-            top: 0;
-            right: 0;
-            transform: translate(50%, -50%);
-        }
-    </style>
+    <!--common styles-->
+    <link rel="stylesheet" href="{% static 'styles/common.css' %}">
+    {% block style %}
+    {% endblock %}
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -187,62 +161,20 @@
 <script>
     $.widget.bridge('uibutton', $.ui.button)
 </script>
-
+<!--Highlight active nav item-->
 <script>
     $(document).ready(function () {
         const currentPath = window.location.pathname;
-        //Assign title a name of current page
-        const [first, ...others] = currentPath.split('/')[2];
-        document.title = first.toUpperCase().concat(...others);
-        //Highlight active link
         $('.nav-item a').each(function () {
             const linkPath = $(this).attr('href');
-            if (linkPath === currentPath) $(this).addClass('active');
+            if (linkPath === currentPath) {
+                $(this).addClass('active');
+            }
         });
     });
 </script>
-
-<script>
-    $(document).ready(function () {
-        const $wrappers = $('.scrolling-wrapper');
-
-        $wrappers.each(function () {
-            let isDown = false;
-            let startX;
-            let startY;
-            let scrollLeft;
-            let scrollTop;
-
-            $(this).on('mousedown', function (e) {
-                isDown = true;
-                startX = e.pageX;
-                startY = e.pageY;
-                scrollLeft = $(this).scrollLeft();
-                scrollTop = $(this).scrollTop();
-                $(this).css('cursor', 'grabbing');
-            });
-
-            $(this).on('mouseleave mouseup', function () {
-                isDown = false;
-                $(this).css('cursor', 'grab');
-            })
-
-            const $wrapper = this;
-
-            $(document).on('mousemove', function (e) {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - $wrapper.offsetLeft;
-                const y = e.pageY - $wrapper.offsetTop;
-                const walkX = x - startX;
-                const walkY = y - startY;
-                $wrapper.scrollLeft = scrollLeft - walkX;
-                $wrapper.scrollTop = scrollTop - walkY;
-            });
-        })
-
-    });
-</script>
+{% block script %}
+{% endblock %}
 <!-- Bootstrap 4 -->
 <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 <!-- ChartJS -->

@@ -1,4 +1,20 @@
 {% extends "panel/base.html" %}
+{% block title %}
+    Banners
+{% endblock %}
+{% block style %}
+    <style>
+        .top-banner-settings {
+            margin: 0 1rem 0 0.25rem;
+        }
+
+        @media (min-width: 576px) {
+            .top-banner-settings {
+                margin-left: auto;
+            }
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="card">
         <div class="card-header p-2">
@@ -9,8 +25,8 @@
                 <div class="d-sm-block d-none">
                     Size: 1000 × 190
                 </div>
-                <div class="ml-auto mr-4">
-                    <select class="custom-select w-auto" id="top-banner-select" >
+                <div class="top-banner-settings">
+                    <select class="custom-select w-auto" id="top-banner-select">
                         <option value="1" selected>1</option>
                         <option value="2">2</option>
                         <option value="4">4</option>
@@ -20,7 +36,8 @@
                 </div>
                 <div class="custom-control custom-switch">
                     <input type="checkbox" class="custom-control-input ml-auto" id="top-banner-switch">
-                    <label class="custom-control-label form-check-label" for="top-banner-switch"> Enabled / Disabled</label>
+                    <label class="custom-control-label form-check-label" for="top-banner-switch"> Enabled /
+                        Disabled</label>
                 </div>
             </div>
             <div class="scrolling-wrapper">
@@ -51,7 +68,7 @@
                                               placeholder="Enter description"></textarea>
                                 </div>
                                 <button type="button"
-                                        class="btn btn-sm btn-primary btn-danger btn-circle btn-corner">
+                                        class=" btn btn-sm btn-primary btn-danger btn-circle btn-corner">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -61,4 +78,47 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            const $wrappers = $('.scrolling-wrapper');
+
+            $wrappers.each(function () {
+                let isDown = false;
+                let startX;
+                let startY;
+                let scrollLeft;
+                let scrollTop;
+
+                $(this).on('mousedown', function (e) {
+                    isDown = true;
+                    startX = e.pageX;
+                    startY = e.pageY;
+                    scrollLeft = $(this).scrollLeft();
+                    scrollTop = $(this).scrollTop();
+                    $(this).css('cursor', 'grabbing');
+                });
+
+                $(this).on('mouseleave mouseup', function () {
+                    isDown = false;
+                    $(this).css('cursor', 'grab');
+                })
+
+                const $wrapper = this;
+
+                $(document).on('mousemove', function (e) {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - $wrapper.offsetLeft;
+                    const y = e.pageY - $wrapper.offsetTop;
+                    const walkX = x - startX;
+                    const walkY = y - startY;
+                    $wrapper.scrollLeft = scrollLeft - walkX;
+                    $wrapper.scrollTop = scrollTop - walkY;
+                });
+            })
+
+        });
+    </script>
 {% endblock %}
