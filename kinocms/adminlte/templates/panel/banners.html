@@ -20,8 +20,14 @@
         }
 
         .preview-banner {
-            height: 2rem;
+            height: 4rem;
             width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 5px;
+            margin-bottom: 7px;
         }
     </style>
 {% endblock %}
@@ -149,13 +155,15 @@
                 const src = URL.createObjectURL(image);
 
                 const $cardBody = $(this).closest('.card-body');
-                // remove previous image
-                const $previewImages = $cardBody.find('.preview-banner');
-                $previewImages.remove();
 
-                const $image = $(`<img class="rounded mb-2 preview-banner" src=${src} alt="banner">`);
+                const $previewBanners = $cardBody.find('.preview-banner');
+                $previewBanners.remove();
 
-                $cardBody.prepend($image);
+                const $previewBanner = $('<div class="preview-banner">');
+                $cardBody.prepend($previewBanner);
+
+                const $image = $(`<img class="rounded" style="width: 100%" src=${src} alt="banner">`);
+                $previewBanner.append($image);
             })
         });
     </script>
