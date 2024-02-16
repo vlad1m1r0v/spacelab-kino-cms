@@ -1,3 +1,7 @@
+textarea {
+    resize: none;
+}
+
 .scrolling-wrapper {
     overflow-x: scroll;
     white-space: nowrap;
