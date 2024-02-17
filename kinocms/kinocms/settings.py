@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import configparser
 import os
 from pathlib import Path
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,7 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'locations',
-    'adminlte'
+    'banners',
+    'adminlte',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -139,3 +143,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'users.authentication.EmailBackend'
 ]
+
+cloudinary.config(
+    cloud_name=config['cloudinary']['name'],
+    api_key=config['cloudinary']['key'],
+    api_secret=config['cloudinary']['secret']
+)
