@@ -2,7 +2,8 @@
 {% block title %}
     Banners
 {% endblock %}
-{% block style %}
+{% block head %}
+    {% load cloudinary %}
     <style>
         .top-banner-rotation-speed {
             margin: 0 1rem 0 0.25rem;
@@ -19,6 +20,11 @@
             }
         }
 
+        .banner-card {
+            width: 20rem;
+            position: relative;
+        }
+
         .preview-banner {
             height: 4rem;
             width: 100%;
@@ -29,6 +35,10 @@
             border-radius: 5px;
             margin-bottom: 7px;
         }
+
+        .banner-image {
+            width: 100%;
+        }
     </style>
 {% endblock %}
 {% block content %}
@@ -37,76 +47,81 @@
             Top banner
         </div>
         <div class="card-body p-2">
-            <div class="d-flex flex-row align-items-center">
-                <div class="d-sm-block d-none">
-                    Size: 1000 × 190
+            <form method="post">
+                {% with top_banner_settings_form as settings %}
+                    <div class="form-group d-flex flex-row align-items-center mb-0">
+                    <div class="d-sm-block d-none">
+                        Size: 1000 × 190
+                    </div>
+                    <div class="top-banner-rotation-speed">
+                        {{ settings.banner_rotation }}
+                        <label for="id_banner_rotation" class="font-weight-normal ml-1">Rotation</label>
+                    </div>
+                    <div class="custom-control custom-switch">
+                        {{ settings.are_banners_active }}
+                        <label class="custom-control-label form-check-label" for="id_are_banners_active"> Enabled /
+                            Disabled</label>
+                    </div>
+                {% endwith %}
                 </div>
-                <div class="top-banner-rotation-speed">
-                    <select class="custom-select w-auto" id="top-banner-select">
-                        <option value="1" selected>1</option>
-                        <option value="2">2</option>
-                        <option value="4">4</option>
-                        <option value="8">8</option>
-                    </select>
-                    <label for="top-banner-select" class="font-weight-normal ml-1">Rotation</label>
-                </div>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="top-banner-switch">
-                    <label class="custom-control-label form-check-label" for="top-banner-switch"> Enabled /
-                        Disabled</label>
-                </div>
-            </div>
-            <div class="scrolling-wrapper">
-                <div class="mt-3">
-                    {% for i in '0123456789'|make_list %}
-                        <div class="card border mx-1" style="width: 20rem; position: relative">
-                            <div class="card-body p-2">
-                                <div class="skeleton rounded mb-2 preview-banner"></div>
-                                <div class="input-group mb-2">
-                                    <div class="custom-file">
-                                        <label class="custom-file-label" for="top-banner-image">Choose image</label>
-                                        <input type="file" class="custom-file-input" id="top-banner-image"
-                                               accept="image/*"/>
+                {% with top_banner_formset as formset %}
+                    {{ formset.management_form }}
+                    <div class="scrolling-wrapper">
+                        <div class="mt-3">
+                            {% for form in formset %}
+                                <div class="card border mx-1 banner-card">
+                                    <div class="card-body p-2">
+                                        {% if form.image.value is None %}
+                                            <div class="skeleton rounded mb-2 preview-banner"></div>
+                                        {% else %}
+                                            <div class="preview-banner">
+                                                {% cloudinary form.image.value class="banner-image" %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="input-group mb-2">
+                                            <div class="custom-file">
+                                                <label class="custom-file-label"
+                                                       for="{{ form.image.auto_id }}">
+                                                    Choose image
+                                                </label>
+                                                {{ form.image }}
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">URL</span>
+                                            </div>
+                                            {{ form.url }}
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Description</span>
+                                            </div>
+                                            {{ form.description }}
+                                        </div>
+                                        <button type="button"
+                                                class=" btn btn-sm btn-primary btn-danger btn-circle btn-corner">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">URL</span>
-                                    </div>
-                                    <input type="text" class="form-control" aria-label="Enter URL"
-                                           placeholder="Enter URL"/>
-                                </div>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">Description</span>
-                                    </div>
-                                    <textarea class="form-control"
-                                              aria-label="Enter description"
-                                              placeholder="Enter description"></textarea>
-                                </div>
-                                <button type="button"
-                                        class=" btn btn-sm btn-primary btn-danger btn-circle btn-corner">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </button>
-                            </div>
+                            {% endfor %}
                         </div>
-                    {% endfor %}
+                    </div>
+                {% endwith %}
+                <div class="d-flex flex-row">
+                    <button type="submit"
+                            class="btn btn-primary btn-success top-banner-save-button">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                        Save
+                    </button>
+                    <button type="submit"
+                            class="btn btn-primary btn-info">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        Add form
+                    </button>
                 </div>
-            </div>
-            <div class="d-flex flex-row">
-                <button id="submit-button"
-                        type="submit"
-                        class="btn btn-primary btn-success top-banner-save-button">
-                    <i class="fa fa-bookmark" aria-hidden="true"></i>
-                    Save
-                </button>
-                <button id="submit-button"
-                        type="submit"
-                        class="btn btn-primary btn-info">
-                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                    Add form
-                </button>
-            </div>
+            </form>
         </div>
     </div>
 {% endblock %}
@@ -151,6 +166,8 @@
             })
 
             $('input:file').change(function (e) {
+                $(this).prev().html($(this).val().split('\\').pop());
+
                 const image = e.target.files[0];
                 const src = URL.createObjectURL(image);
 
@@ -162,9 +179,10 @@
                 const $previewBanner = $('<div class="preview-banner">');
                 $cardBody.prepend($previewBanner);
 
-                const $image = $(`<img class="rounded" style="width: 100%" src=${src} alt="banner">`);
+                const $image = $(`<img class="rounded banner-image" src=${src} alt="banner">`);
                 $previewBanner.append($image);
             })
+
         });
     </script>
 {% endblock %}

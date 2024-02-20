@@ -20,7 +20,7 @@ class TopBanner(BaseBanner):
     description = models.TextField()
 
 
-class Singleton(models.Model):
+class Singleton(AbstractBaseModel):
     class Meta:
         abstract = True
 
@@ -38,8 +38,10 @@ class Singleton(models.Model):
 
 
 class BannerSettings(Singleton):
-    banner_rotation = models.PositiveSmallIntegerField()
-    advertisement_rotation = models.PositiveSmallIntegerField()
+    banner_rotation = models.PositiveSmallIntegerField(default=5)
+    are_banners_active = models.BooleanField(default=True)
+    advertisement_rotation = models.PositiveSmallIntegerField(default=5)
+    are_advertisements_active = models.BooleanField(default=True)
     background_image = CloudinaryField("image")
     is_background_image = models.BooleanField(default=True)
 
