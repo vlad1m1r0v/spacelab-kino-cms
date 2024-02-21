@@ -1,8 +1,10 @@
 from django.views.generic import TemplateView
 from django.forms import modelformset_factory
 from adminlte.decorators import admin_only
-from adminlte.forms.banners import TopBannerForm, TopBannerSettingsForm
-from banners.models import TopBanner, BannerSettings
+from adminlte.forms.banners import (TopBannerSettingsForm, TopBannerForm,
+                                    AdvertisementBannerSettingsForm, AdvertisementBannerForm,
+                                    BannerSettingsForm)
+from banners.models import TopBanner, BannerSettings, AdvertisementBanner
 
 
 @admin_only
@@ -13,11 +15,29 @@ class BannersView(TemplateView):
         context = super().get_context_data(**kwargs)
 
         initial_settings = BannerSettings.objects.all().first()
+        # top banner settings
         context["top_banner_settings_form"] = TopBannerSettingsForm(
             initial={'banner_rotation': initial_settings.banner_rotation,
-                     'are_banners_active': initial_settings.are_banners_active})
+                     'are_banners_active': initial_settings.are_banners_active}, prefix="top_banner_settings")
 
         top_banner_formset = modelformset_factory(TopBanner, form=TopBannerForm, extra=1)
-        context["top_banner_formset"] = top_banner_formset(queryset=TopBanner.objects.all(), prefix="top_banner")
+        context["top_banner_formset"] = top_banner_formset(queryset=TopBanner.objects.all(), prefix="top_banners")
+        # background settings
+        context["banner_settings_form"] = BannerSettingsForm(
+            initial={
+                "is_background_image": initial_settings.is_background_image,
+                "background_image": initial_settings.background_image
+            }
+        )
+        # advertisement banner settings
+        context["advertisement_banner_settings_form"] = AdvertisementBannerSettingsForm(
+            initial={'advertisement_rotation': initial_settings.advertisement_rotation,
+                     'are_advertisements_active': initial_settings.are_advertisements_active},
+            prefix="advertisement_banner_settings")
+
+        advertisement_banner_formset = modelformset_factory(AdvertisementBanner, form=AdvertisementBannerForm, extra=1)
+        context["advertisement_banner_formset"] = advertisement_banner_formset(
+            queryset=AdvertisementBanner.objects.all(),
+            prefix="advertisement_banners")
 
         return context

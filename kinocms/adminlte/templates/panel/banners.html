@@ -5,17 +5,19 @@
 {% block head %}
     {% load cloudinary %}
     <style>
-        .top-banner-rotation-speed {
+        .banner-rotation-speed {
             margin: 0 1rem 0 0.25rem;
         }
 
-        .top-banner-save-button {
+        .banner-save-button {
             margin: 0 0.5rem 0 0.25rem;
         }
 
         @media (min-width: 576px) {
-            .top-banner-rotation-speed,
-            .top-banner-save-button {
+            .banner-rotation-speed,
+            .banner-save-button,
+            .background-save-button,
+            .background-ratio {
                 margin-left: auto;
             }
         }
@@ -25,9 +27,8 @@
             position: relative;
         }
 
-        .preview-banner {
-            height: 4rem;
-            width: 100%;
+        .preview-banner,
+        .preview-background {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,12 +37,26 @@
             margin-bottom: 7px;
         }
 
+        .preview-banner {
+            height: 4rem;
+        }
+
+        .preview-background {
+            height: auto;
+        }
+
         .banner-image {
+            width: 100%
+        }
+
+        .background-image {
             width: 100%;
         }
+
     </style>
 {% endblock %}
 {% block content %}
+    <!--Top banner settings-->
     <div class="card">
         <div class="card-header p-2">
             Top banner
@@ -50,20 +65,20 @@
             <form method="post">
                 {% with top_banner_settings_form as settings %}
                     <div class="form-group d-flex flex-row align-items-center mb-0">
-                    <div class="d-sm-block d-none">
-                        Size: 1000 × 190
-                    </div>
-                    <div class="top-banner-rotation-speed">
-                        {{ settings.banner_rotation }}
-                        <label for="id_banner_rotation" class="font-weight-normal ml-1">Rotation</label>
-                    </div>
-                    <div class="custom-control custom-switch">
-                        {{ settings.are_banners_active }}
-                        <label class="custom-control-label form-check-label" for="id_are_banners_active"> Enabled /
-                            Disabled</label>
+                        <div class="d-sm-block d-none">
+                            Size: 1000 × 190
+                        </div>
+                        <div class="banner-rotation-speed">
+                            {{ settings.banner_rotation }}
+                            <label for="id_banner_rotation" class="font-weight-normal ml-1">Rotation</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            {{ settings.are_banners_active }}
+                            <label class="custom-control-label form-check-label" for="id_are_banners_active"> Enabled /
+                                Disabled</label>
+                        </div>
                     </div>
                 {% endwith %}
-                </div>
                 {% with top_banner_formset as formset %}
                     {{ formset.management_form }}
                     <div class="scrolling-wrapper">
@@ -111,7 +126,132 @@
                 {% endwith %}
                 <div class="d-flex flex-row">
                     <button type="submit"
-                            class="btn btn-primary btn-success top-banner-save-button">
+                            class="btn btn-primary btn-success banner-save-button">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                        Save
+                    </button>
+                    <button type="submit"
+                            class="btn btn-primary btn-info">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        Add form
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--Background settings-->
+    <div class="card">
+        <div class="card-header p-2">
+            Background image
+        </div>
+        <div class="p-2">
+            <form method="post">
+                {% with banner_settings_form as settings %}
+                    <div class="form-group d-flex flex-row align-items-center mb-0">
+                        <div class="d-sm-block d-none">
+                            Size: 2000 × 3000
+                        </div>
+                        <div class="background-ratio mr-0 d-flex align-items-center">
+                            {% for radio in settings.is_background_image %}
+                                <span class="radio mr-1 ml-2">{{ radio.tag }}</span>
+                                <span class="align-text-top">{{ radio.choice_label }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-body p-0 mt-2">
+                        {% if settings.background_image.value is None %}
+                            <div class="skeleton rounded mb-2 preview-background"></div>
+                        {% else %}
+                            <div class="preview-background">
+                                {% cloudinary settings.background_image.value class="background-image" %}
+                            </div>
+                        {% endif %}
+                        <div class="input-group mb-2">
+                            <div class="custom-file">
+                                <label class="custom-file-label"
+                                       for="{{ settings.background_image.auto_id }}">
+                                    Choose image
+                                </label>
+                                {{ settings.background_image }}
+                            </div>
+                        </div>
+                    </div>
+                {% endwith %}
+                <div class="d-flex flex-row">
+                    <button type="submit"
+                            class="btn btn-primary btn-success background-save-button">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--Advertisement banner settings-->
+    <div class="card">
+        <div class="card-header p-2">
+            Advertisement banner
+        </div>
+        <div class="card-body p-2">
+            <form method="post">
+                {% with advertisement_banner_settings_form as settings %}
+                    <div class="form-group d-flex flex-row align-items-center mb-0">
+                        <div class="d-sm-block d-none">
+                            Size: 1000 × 190
+                        </div>
+                        <div class="banner-rotation-speed">
+                            {{ settings.advertisement_rotation }}
+                            <label for="id_banner_rotation" class="font-weight-normal ml-1">Rotation</label>
+                        </div>
+                        <div class="custom-control custom-switch">
+                            {{ settings.are_advertisements_active }}
+                            <label class="custom-control-label form-check-label" for="id_are_banners_active"> Enabled /
+                                Disabled</label>
+                        </div>
+                    </div>
+                {% endwith %}
+                {% with advertisement_banner_formset as formset %}
+                    {{ formset.management_form }}
+                    <div class="scrolling-wrapper">
+                        <div class="mt-3">
+                            {% for form in formset %}
+                                <div class="card border mx-1 banner-card">
+                                    <div class="card-body p-2">
+                                        {% if form.image.value is None %}
+                                            <div class="skeleton rounded mb-2 preview-banner"></div>
+                                        {% else %}
+                                            <div class="preview-banner">
+                                                {% cloudinary form.image.value class="banner-image" %}
+                                            </div>
+                                        {% endif %}
+                                        <div class="input-group mb-2">
+                                            <div class="custom-file">
+                                                <label class="custom-file-label"
+                                                       for="{{ form.image.auto_id }}">
+                                                    Choose image
+                                                </label>
+                                                {{ form.image }}
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">URL</span>
+                                            </div>
+                                            {{ form.url }}
+                                        </div>
+                                        <button type="button"
+                                                class=" btn btn-sm btn-primary btn-danger btn-circle btn-corner">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endwith %}
+                <div class="d-flex flex-row">
+                    <button type="submit"
+                            class="btn btn-primary btn-success banner-save-button">
                         <i class="fa fa-bookmark" aria-hidden="true"></i>
                         Save
                     </button>
@@ -173,14 +313,17 @@
 
                 const $cardBody = $(this).closest('.card-body');
 
-                const $previewBanners = $cardBody.find('.preview-banner');
-                $previewBanners.remove();
+                const $preview = $cardBody.find('.preview-banner, .preview-background');
 
-                const $previewBanner = $('<div class="preview-banner">');
-                $cardBody.prepend($previewBanner);
+                const className = $($preview).attr("class");
 
-                const $image = $(`<img class="rounded banner-image" src=${src} alt="banner">`);
-                $previewBanner.append($image);
+                $preview.remove();
+
+                const $previewContainer = $(`<div class=${className}>`);
+                $cardBody.prepend($previewContainer);
+
+                const $image = $(`<img class="rounded w-100" src=${src} alt="banner">`);
+                $previewContainer.append($image);
             })
 
         });
