@@ -315,7 +315,7 @@
 
                 const $preview = $cardBody.find('.preview-banner, .preview-background');
 
-                const className = $($preview).attr("class");
+                const className = $($preview).hasClass("preview-banner") ? "preview-banner" : "preview-background";
 
                 $preview.remove();
 
