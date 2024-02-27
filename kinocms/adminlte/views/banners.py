@@ -49,11 +49,8 @@ class BackgroundSettingsView(View):
     def post(self, request, *args, **kwargs):
         form = BannerSettingsForm(request.POST, request.FILES)
         if form.is_valid():
-            banner_settings = BannerSettings.objects.get(pk=1)
-            banner_settings.is_background_image = form.cleaned_data['is_background_image']
-            banner_settings.background_image = form.cleaned_data['background_image']
-            banner_settings.save()
+            form.save()
             messages.success(request, "Background settings changed successfully")
         else:
-            messages.error(request, "Error occurred while updating background settings")
+            messages.error(request, form.non_field_errors().as_text()[2:])
         return redirect("banners:index")

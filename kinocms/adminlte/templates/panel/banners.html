@@ -42,7 +42,7 @@
         }
 
         .preview-background {
-            height: auto;
+            min-height: 20rem;
         }
 
         .banner-image {
@@ -51,6 +51,15 @@
 
         .background-image {
             width: 100%;
+            height: auto;
+        }
+
+        span.radio:not(:first-child) {
+            margin-left: 1rem;
+        }
+
+        span.radio {
+            margin-right: 0.5rem;
         }
 
     </style>
@@ -156,8 +165,8 @@
                         </div>
                         <div class="background-ratio mr-0 d-flex align-items-center">
                             {% for radio in settings.is_background_image %}
-                                <span class="radio mr-1 ml-2">{{ radio.tag }}</span>
-                                <span class="align-text-top">{{ radio.choice_label }}</span>
+                                <span class="radio">{{ radio.tag }}</span>
+                                <span>{{ radio.choice_label }}</span>
                             {% endfor %}
                         </div>
                     </div>

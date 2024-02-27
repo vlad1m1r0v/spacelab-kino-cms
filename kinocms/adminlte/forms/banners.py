@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm, Select, CheckboxInput, URLInput, Textarea, RadioSelect, FileInput
 from banners.models import TopBanner, AdvertisementBanner, BannerSettings
 
@@ -36,9 +37,32 @@ class BannerSettingsForm(ModelForm):
         widgets = {
             "is_background_image": RadioSelect(choices=[(True, 'Image on background'),
                                                         (False, 'Just background')],
-                                               attrs={}),
+                                               ),
             "background_image": FileInput(attrs={"class": "form-control custom-file-input", "type": "file"})
         }
+
+    def clean(self):
+        is_background_image = self.cleaned_data.get('is_background_image')
+        background_image = self.cleaned_data.get('background_image')
+
+        if not is_background_image:
+            return
+
+        banner_settings = BannerSettings.objects.get(pk=1)
+
+        if not background_image and not banner_settings.background_image:
+            raise ValidationError("Background image not provided")
+
+    def save(self, commit=True):
+        banner_settings = BannerSettings.objects.get(pk=1)
+
+        if self.cleaned_data['is_background_image'] is not None:
+            banner_settings.is_background_image = self.cleaned_data['is_background_image']
+
+        if self.cleaned_data['background_image']:
+            banner_settings.background_image = self.cleaned_data['background_image']
+
+        banner_settings.save()
 
 
 class AdvertisementBannerForm(ModelForm):

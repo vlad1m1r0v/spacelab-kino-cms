@@ -42,5 +42,5 @@ class BannerSettings(Singleton):
     are_banners_active = models.BooleanField(default=True)
     advertisement_rotation = models.PositiveSmallIntegerField(default=5)
     are_advertisements_active = models.BooleanField(default=True)
-    background_image = CloudinaryField("image")
+    background_image = CloudinaryField("image", null=True, blank=True)
     is_background_image = models.BooleanField(default=True)
