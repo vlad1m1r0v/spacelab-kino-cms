@@ -45,6 +45,7 @@ class BannersView(TemplateView):
         return context
 
 
+@admin_only
 class BackgroundSettingsView(View):
     def post(self, request, *args, **kwargs):
         form = BannerSettingsForm(request.POST, request.FILES)
