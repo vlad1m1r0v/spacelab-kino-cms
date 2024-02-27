@@ -1,4 +1,6 @@
-from django.views.generic import TemplateView
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.views.generic import TemplateView, View
 from django.forms import modelformset_factory
 from adminlte.decorators import admin_only
 from adminlte.forms.banners import (TopBannerSettingsForm, TopBannerForm,
@@ -41,3 +43,17 @@ class BannersView(TemplateView):
             prefix="advertisement_banners")
 
         return context
+
+
+class BackgroundSettingsView(View):
+    def post(self, request, *args, **kwargs):
+        form = BannerSettingsForm(request.POST, request.FILES)
+        if form.is_valid():
+            banner_settings = BannerSettings.objects.get(pk=1)
+            banner_settings.is_background_image = form.cleaned_data['is_background_image']
+            banner_settings.background_image = form.cleaned_data['background_image']
+            banner_settings.save()
+            messages.success(request, "Background settings changed successfully")
+        else:
+            messages.error(request, "Error occurred while updating background settings")
+        return redirect("banners:index")

@@ -1,4 +1,4 @@
-from django.forms import ModelForm, Select, CheckboxInput, FileInput, URLInput, Textarea, RadioSelect
+from django.forms import ModelForm, Select, CheckboxInput, URLInput, Textarea, RadioSelect, FileInput
 from banners.models import TopBanner, AdvertisementBanner, BannerSettings
 
 

@@ -74,8 +74,10 @@
                         </div>
                         <div class="custom-control custom-switch">
                             {{ settings.are_banners_active }}
-                            <label class="custom-control-label form-check-label" for="id_are_banners_active"> Enabled /
-                                Disabled</label>
+                            <label class="custom-control-label form-check-label"
+                                   for="id_top_banner_settings-are_banners_active">
+                                Enabled / Disabled
+                            </label>
                         </div>
                     </div>
                 {% endwith %}
@@ -145,7 +147,8 @@
             Background image
         </div>
         <div class="p-2">
-            <form method="post">
+            <form action="{% url 'banners:background-settings' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 {% with banner_settings_form as settings %}
                     <div class="form-group d-flex flex-row align-items-center mb-0">
                         <div class="d-sm-block d-none">
@@ -205,8 +208,10 @@
                         </div>
                         <div class="custom-control custom-switch">
                             {{ settings.are_advertisements_active }}
-                            <label class="custom-control-label form-check-label" for="id_are_banners_active"> Enabled /
-                                Disabled</label>
+                            <label class="custom-control-label form-check-label"
+                                   for="id_advertisement_banner_settings-are_advertisements_active">
+                                Enabled / Disabled
+                            </label>
                         </div>
                     </div>
                 {% endwith %}

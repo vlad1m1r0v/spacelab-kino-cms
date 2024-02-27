@@ -31,6 +31,8 @@
     <link rel="stylesheet" href="{% static 'plugins/summernote/summernote-bs4.min.css' %}">
     <!--common styles-->
     <link rel="stylesheet" href="{% static 'styles/common.css' %}">
+    <!-- Toaster -->
+    <link rel="stylesheet" href="{% static 'plugins/toastr/toastr.min.css' %}">
     {% block head %}
     {% endblock %}
 </head>
@@ -161,6 +163,8 @@
 <script>
     $.widget.bridge('uibutton', $.ui.button)
 </script>
+<!--Toast-->
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
 <!--Highlight active nav item-->
 <script>
     $(document).ready(function () {
@@ -172,6 +176,18 @@
             }
         });
     });
+</script>
+<!--Toast-->
+<script>
+    {% if messages %}
+        toastr.options = {
+            "positionClass": "toast-bottom-left",
+            "closeButton": true
+        }
+        {% for message in messages %}
+            toastr["{{ message.tags }}".toLowerCase()]("{{message}}")
+        {% endfor %}
+    {% endif %}
 </script>
 {% block script %}
 {% endblock %}

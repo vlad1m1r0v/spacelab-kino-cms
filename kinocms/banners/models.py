@@ -44,6 +44,3 @@ class BannerSettings(Singleton):
     are_advertisements_active = models.BooleanField(default=True)
     background_image = CloudinaryField("image")
     is_background_image = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name_plural = "Banner Settings"
