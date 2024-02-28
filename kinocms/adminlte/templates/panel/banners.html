@@ -71,7 +71,8 @@
             Top banner
         </div>
         <div class="card-body p-2">
-            <form method="post">
+            <form action="{% url 'banners:top-banners' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
                 {% with top_banner_settings_form as settings %}
                     <div class="form-group d-flex flex-row align-items-center mb-0">
                         <div class="d-sm-block d-none">
@@ -91,11 +92,12 @@
                     </div>
                 {% endwith %}
                 {% with top_banner_formset as formset %}
-                    {{ formset.management_form }}
                     <div class="scrolling-wrapper">
                         <div class="mt-3">
+                            {{ formset.management_form }}
                             {% for form in formset %}
-                                <div class="card border mx-1 banner-card">
+                                <div class="card border mx-2 banner-card">
+                                    {{ form.id }}
                                     <div class="card-body p-2">
                                         {% if form.image.value is None %}
                                             <div class="skeleton rounded mb-2 preview-banner"></div>
@@ -125,8 +127,11 @@
                                             </div>
                                             {{ form.description }}
                                         </div>
+                                        <div style="display: none">
+                                            {{ form.DELETE }}
+                                        </div>
                                         <button type="button"
-                                                class=" btn btn-sm btn-primary btn-danger btn-circle btn-corner">
+                                                class="btn btn-sm btn-primary btn-danger btn-circle btn-corner delete-top-banner-button">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                         </button>
                                     </div>
@@ -141,8 +146,8 @@
                         <i class="fa fa-bookmark" aria-hidden="true"></i>
                         Save
                     </button>
-                    <button type="submit"
-                            class="btn btn-primary btn-info">
+                    <button type="button"
+                            class="btn btn-primary btn-info add-top-banner-button">
                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                         Add form
                     </button>
@@ -229,7 +234,7 @@
                     <div class="scrolling-wrapper">
                         <div class="mt-3">
                             {% for form in formset %}
-                                <div class="card border mx-1 banner-card">
+                                <div class="card border mx-2 banner-card">
                                     <div class="card-body p-2">
                                         {% if form.image.value is None %}
                                             <div class="skeleton rounded mb-2 preview-banner"></div>
@@ -317,7 +322,7 @@
                     $wrapper.scrollLeft = scrollLeft - walkX;
                     $wrapper.scrollTop = scrollTop - walkY;
                 });
-            })
+            });
 
             $('input:file').change(function (e) {
                 $(this).prev().html($(this).val().split('\\').pop());
@@ -338,8 +343,38 @@
 
                 const $image = $(`<img class="rounded w-100" src=${src} alt="banner">`);
                 $previewContainer.append($image);
-            })
+            });
 
-        });
+            const $emptyTopBannerForm = $wrappers.first().find('.mt-3 .card:last-child');
+
+            $('.add-top-banner-button').click(function () {
+                const count = $wrappers.first().find('.mt-3 .card').length;
+
+                const $bannerFormMarkup = $emptyTopBannerForm.prop('outerHTML');
+                const regex = /top_banners-(\d+)-/g;
+                const $compiledBannerForm = $bannerFormMarkup.replace(regex, `top_banners-${count}-`);
+
+                $wrappers.first().find('.mt-3').append($compiledBannerForm);
+
+                $('#id_top_banners-TOTAL_FORMS').attr('value', count + 1);
+
+                $wrappers.first().animate({
+                    scrollLeft: $wrappers.first().prop('scrollWidth')
+                }, 500);
+            });
+
+            $('.delete-top-banner-button').click(function () {
+                const count = $wrappers.first().find('.mt-3 .card').length;
+
+                const $card = $(this).closest('.card');
+
+                $card.find('input[type="checkbox"]').prop('checked', true);
+
+                $('#id_top_banners-TOTAL_FORMS').attr('value', count - 1);
+
+                $card.hide();
+            })
+        })
+        ;
     </script>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, Select, CheckboxInput, URLInput, Textarea, RadioSelect, FileInput
+from django.forms import ModelForm, Select, CheckboxInput, URLInput, Textarea, RadioSelect, FileInput, \
+    modelformset_factory
 from banners.models import TopBanner, AdvertisementBanner, BannerSettings
 
 
@@ -19,15 +20,28 @@ class TopBannerForm(ModelForm):
         }
 
 
+TopBannerFormSet = modelformset_factory(TopBanner,
+                                        form=TopBannerForm,
+                                        can_delete=True,
+                                        can_delete_extra=True,
+                                        extra=1)
+
+
 class TopBannerSettingsForm(ModelForm):
     class Meta:
         model = BannerSettings
-        fields = ["banner_rotation", "are_banners_active"]
+        fields = ("banner_rotation", "are_banners_active")
         widgets = {
             'banner_rotation': Select(choices=((num, str(num)) for num in range(1, 11)),
                                       attrs={'class': 'form-control custom-select w-auto', }),
             'are_banners_active': CheckboxInput(attrs={'class': 'form-control custom-control-input'})
         }
+
+    def save(self, commit=True):
+        banner_settings = BannerSettings.objects.get(pk=1)
+        banner_settings.banner_rotation = self.cleaned_data.get('banner_rotation')
+        banner_settings.are_banners_active = self.cleaned_data.get('are_banners_active')
+        banner_settings.save()
 
 
 class BannerSettingsForm(ModelForm):
@@ -75,6 +89,11 @@ class AdvertisementBannerForm(ModelForm):
                                    "aria-label": "Enter URL",
                                    "placeholder": "Enter URL"}),
         }
+
+
+AdvertisementBannerFormset = modelformset_factory(model=AdvertisementBanner,
+                                                  form=AdvertisementBannerForm,
+                                                  extra=1)
 
 
 class AdvertisementBannerSettingsForm(ModelForm):

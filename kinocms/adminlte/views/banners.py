@@ -1,11 +1,9 @@
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, View
-from django.forms import modelformset_factory
 from adminlte.decorators import admin_only
-from adminlte.forms.banners import (TopBannerSettingsForm, TopBannerForm,
-                                    AdvertisementBannerSettingsForm, AdvertisementBannerForm,
-                                    BannerSettingsForm)
+from adminlte.forms.banners import (TopBannerSettingsForm, AdvertisementBannerSettingsForm,
+                                    BannerSettingsForm, TopBannerFormSet, AdvertisementBannerFormset)
 from banners.models import TopBanner, BannerSettings, AdvertisementBanner
 
 
@@ -20,10 +18,11 @@ class BannersView(TemplateView):
         # top banner settings
         context["top_banner_settings_form"] = TopBannerSettingsForm(
             initial={'banner_rotation': initial_settings.banner_rotation,
-                     'are_banners_active': initial_settings.are_banners_active}, prefix="top_banner_settings")
+                     'are_banners_active': initial_settings.are_banners_active},
+            prefix="top_banner_settings")
 
-        top_banner_formset = modelformset_factory(TopBanner, form=TopBannerForm, extra=1)
-        context["top_banner_formset"] = top_banner_formset(queryset=TopBanner.objects.all(), prefix="top_banners")
+        context["top_banner_formset"] = TopBannerFormSet(queryset=TopBanner.objects.all(),
+                                                         prefix="top_banners")
         # background settings
         context["banner_settings_form"] = BannerSettingsForm(
             initial={
@@ -37,8 +36,7 @@ class BannersView(TemplateView):
                      'are_advertisements_active': initial_settings.are_advertisements_active},
             prefix="advertisement_banner_settings")
 
-        advertisement_banner_formset = modelformset_factory(AdvertisementBanner, form=AdvertisementBannerForm, extra=1)
-        context["advertisement_banner_formset"] = advertisement_banner_formset(
+        context["advertisement_banner_formset"] = AdvertisementBannerFormset(
             queryset=AdvertisementBanner.objects.all(),
             prefix="advertisement_banners")
 
@@ -54,4 +52,23 @@ class BackgroundSettingsView(View):
             messages.success(request, "Background settings changed successfully")
         else:
             messages.error(request, form.non_field_errors().as_text()[2:])
+        return redirect("banners:index")
+
+
+@admin_only
+class TopBannersView(View):
+    def post(self, request, *args, **kwargs):
+        top_banner_settings_form = TopBannerSettingsForm(request.POST, prefix="top_banner_settings")
+
+        if top_banner_settings_form.is_valid():
+            top_banner_settings_form.save()
+
+        top_banner_formset = TopBannerFormSet(request.POST, request.FILES, prefix="top_banners")
+
+        if top_banner_formset.is_valid():
+            top_banner_formset.save()
+            messages.success(request, "Top banners updated successfully")
+        else:
+            messages.error(request, "some fields are missing")
+
         return redirect("banners:index")

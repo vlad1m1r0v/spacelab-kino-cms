@@ -1,9 +1,10 @@
 from django.urls import path
-from adminlte.views.banners import BannersView, BackgroundSettingsView
+from adminlte.views.banners import BannersView, BackgroundSettingsView, TopBannersView
 
 app_name = "banners"
 
 urlpatterns = [
     path("", BannersView.as_view(), name="index"),
-    path("background-settings/", BackgroundSettingsView.as_view(), name="background-settings")
+    path("background-settings/", BackgroundSettingsView.as_view(), name="background-settings"),
+    path("top-banners/", TopBannersView.as_view(), name="top-banners")
 ]
