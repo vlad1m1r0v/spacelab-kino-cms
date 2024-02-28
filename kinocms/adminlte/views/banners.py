@@ -72,3 +72,25 @@ class TopBannersView(View):
             messages.error(request, "some fields are missing")
 
         return redirect("banners:index")
+
+
+@admin_only
+class AdvertisementBannersView(View):
+    def post(self, request, *args, **kwargs):
+        advertisement_banner_settings_form = AdvertisementBannerSettingsForm(request.POST,
+                                                                             prefix="advertisement_banner_settings")
+
+        if advertisement_banner_settings_form.is_valid():
+            advertisement_banner_settings_form.save()
+
+        advertisement_banner_formset = AdvertisementBannerFormset(request.POST,
+                                                                  request.FILES,
+                                                                  prefix="advertisement_banners")
+
+        if advertisement_banner_formset.is_valid():
+            advertisement_banner_formset.save()
+            messages.success(request, "Advertisement banners updated successfully")
+        else:
+            messages.error(request, "some fields are missing")
+
+        return redirect("banners:index")

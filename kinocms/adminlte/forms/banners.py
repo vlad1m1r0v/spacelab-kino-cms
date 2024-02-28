@@ -20,7 +20,7 @@ class TopBannerForm(ModelForm):
         }
 
 
-TopBannerFormSet = modelformset_factory(TopBanner,
+TopBannerFormSet = modelformset_factory(model=TopBanner,
                                         form=TopBannerForm,
                                         can_delete=True,
                                         can_delete_extra=True,
@@ -93,15 +93,23 @@ class AdvertisementBannerForm(ModelForm):
 
 AdvertisementBannerFormset = modelformset_factory(model=AdvertisementBanner,
                                                   form=AdvertisementBannerForm,
+                                                  can_delete=True,
+                                                  can_delete_extra=True,
                                                   extra=1)
 
 
 class AdvertisementBannerSettingsForm(ModelForm):
     class Meta:
         model = BannerSettings
-        fields = ["advertisement_rotation", "are_advertisements_active"]
+        fields = ("advertisement_rotation", "are_advertisements_active")
         widgets = {
             'advertisement_rotation': Select(choices=((num, str(num)) for num in range(1, 11)),
                                              attrs={'class': 'form-control custom-select w-auto', }),
             'are_advertisements_active': CheckboxInput(attrs={'class': 'form-control custom-control-input'})
         }
+
+    def save(self, commit=True):
+        banner_settings = BannerSettings.objects.get(pk=1)
+        banner_settings.advertisement_rotation = self.cleaned_data.get('advertisement_rotation')
+        banner_settings.are_advertisements_active = self.cleaned_data.get('are_advertisements_active')
+        banner_settings.save()
