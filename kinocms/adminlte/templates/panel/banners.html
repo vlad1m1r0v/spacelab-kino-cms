@@ -286,95 +286,91 @@
 {% endblock %}
 {% block script %}
     <script>
-        $(document).ready(function () {
-            const $wrappers = $('.scrolling-wrapper');
+        const $wrappers = $('.scrolling-wrapper');
+        const $emptyTopBannerForm = $wrappers.first().find('.mt-3 .card:last-child').clone(true);
 
-            $wrappers.each(function () {
-                let isDown = false;
-                let startX;
-                let startY;
-                let scrollLeft;
-                let scrollTop;
+        $wrappers.each(function () {
+            let isDown = false;
+            let startX;
+            let startY;
+            let scrollLeft;
+            let scrollTop;
 
-                $(this).on('mousedown', function (e) {
-                    isDown = true;
-                    startX = e.pageX;
-                    startY = e.pageY;
-                    scrollLeft = $(this).scrollLeft();
-                    scrollTop = $(this).scrollTop();
-                    $(this).css('cursor', 'grabbing');
-                });
-
-                $(this).on('mouseleave mouseup', function () {
-                    isDown = false;
-                    $(this).css('cursor', 'grab');
-                })
-
-                const $wrapper = this;
-
-                $(document).on('mousemove', function (e) {
-                    if (!isDown) return;
-                    e.preventDefault();
-                    const x = e.pageX - $wrapper.offsetLeft;
-                    const y = e.pageY - $wrapper.offsetTop;
-                    const walkX = x - startX;
-                    const walkY = y - startY;
-                    $wrapper.scrollLeft = scrollLeft - walkX;
-                    $wrapper.scrollTop = scrollTop - walkY;
-                });
+            $(this).on('mousedown', function (e) {
+                isDown = true;
+                startX = e.pageX;
+                startY = e.pageY;
+                scrollLeft = $(this).scrollLeft();
+                scrollTop = $(this).scrollTop();
+                $(this).css('cursor', 'grabbing');
             });
 
-            $('input:file').change(function (e) {
-                $(this).prev().html($(this).val().split('\\').pop());
-
-                const image = e.target.files[0];
-                const src = URL.createObjectURL(image);
-
-                const $cardBody = $(this).closest('.card-body');
-
-                const $preview = $cardBody.find('.preview-banner, .preview-background');
-
-                const className = $($preview).hasClass("preview-banner") ? "preview-banner" : "preview-background";
-
-                $preview.remove();
-
-                const $previewContainer = $(`<div class=${className}>`);
-                $cardBody.prepend($previewContainer);
-
-                const $image = $(`<img class="rounded w-100" src=${src} alt="banner">`);
-                $previewContainer.append($image);
-            });
-
-            const $emptyTopBannerForm = $wrappers.first().find('.mt-3 .card:last-child');
-
-            $('.add-top-banner-button').click(function () {
-                const count = $wrappers.first().find('.mt-3 .card').length;
-
-                const $bannerFormMarkup = $emptyTopBannerForm.prop('outerHTML');
-                const regex = /top_banners-(\d+)-/g;
-                const $compiledBannerForm = $bannerFormMarkup.replace(regex, `top_banners-${count}-`);
-
-                $wrappers.first().find('.mt-3').append($compiledBannerForm);
-
-                $('#id_top_banners-TOTAL_FORMS').attr('value', count + 1);
-
-                $wrappers.first().animate({
-                    scrollLeft: $wrappers.first().prop('scrollWidth')
-                }, 500);
-            });
-
-            $('.delete-top-banner-button').click(function () {
-                const count = $wrappers.first().find('.mt-3 .card').length;
-
-                const $card = $(this).closest('.card');
-
-                $card.find('input[type="checkbox"]').prop('checked', true);
-
-                $('#id_top_banners-TOTAL_FORMS').attr('value', count - 1);
-
-                $card.hide();
+            $(this).on('mouseleave mouseup', function () {
+                isDown = false;
+                $(this).css('cursor', 'grab');
             })
+
+            const $wrapper = this;
+
+            $(document).on('mousemove', function (e) {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - $wrapper.offsetLeft;
+                const y = e.pageY - $wrapper.offsetTop;
+                const walkX = x - startX;
+                const walkY = y - startY;
+                $wrapper.scrollLeft = scrollLeft - walkX;
+                $wrapper.scrollTop = scrollTop - walkY;
+            });
         })
-        ;
+
+        $(document).on('click', '.delete-top-banner-button', function () {
+            const count = $wrappers.first().find('.mt-3 .card').length;
+
+            const $card = $(this).closest('.card');
+
+            $card.find('input[type="checkbox"]').prop('checked', true);
+
+            $('#id_top_banners-TOTAL_FORMS').attr('value', count - 1);
+
+            $card.hide();
+        });
+
+        $(document).on('click', '.add-top-banner-button', function () {
+            const count = $wrappers.first().find('.mt-3 .card').length;
+
+            const $bannerFormMarkup = $emptyTopBannerForm.prop('outerHTML');
+            const regex = /top_banners-(\d+)-/g;
+            const $compiledBannerForm = $bannerFormMarkup.replace(regex, `top_banners-${count}-`);
+
+            $wrappers.first().find('.mt-3').append($compiledBannerForm);
+
+            $('#id_top_banners-TOTAL_FORMS').attr('value', count + 1);
+
+            $wrappers.first().animate({
+                scrollLeft: $wrappers.first().prop('scrollWidth')
+            }, 500);
+        });
+
+        $(document).on('change', 'input:file', function (e) {
+            $(this).prev().html($(this).val().split('\\').pop());
+
+            const image = e.target.files[0];
+            const src = URL.createObjectURL(image);
+
+            const $cardBody = $(this).closest('.card-body');
+
+            const $preview = $cardBody.find('.preview-banner, .preview-background');
+
+            const className = $($preview).hasClass("preview-banner") ? "preview-banner" : "preview-background";
+
+            $preview.remove();
+
+            const $previewContainer = $(`<div class=${className}>`);
+            $cardBody.prepend($previewContainer);
+
+            const $image = $(`<img class="rounded w-100" src=${src} alt="banner">`);
+            $previewContainer.append($image);
+        });
     </script>
 {% endblock %}
