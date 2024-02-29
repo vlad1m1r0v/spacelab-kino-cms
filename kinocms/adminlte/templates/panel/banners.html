@@ -331,19 +331,15 @@
         })
 
         $(document).on('click', '.delete-top-banner-button', function () {
-            const count = $wrappers.eq(0).find('.mt-3 .card').length;
-
             const $card = $(this).closest('.card');
-
             $card.find('input[type="checkbox"]').prop('checked', true);
-
-            $('#id_top_banners-TOTAL_FORMS').attr('value', count - 1);
-
             $card.hide();
         });
 
         $(document).on('click', '.add-top-banner-button', function () {
-            const count = $wrappers.eq(0).find('.mt-3 .card').length;
+            const $totalForms = $('#id_top_banners-TOTAL_FORMS');
+
+            const count = parseInt($totalForms.val());
 
             const $bannerFormMarkup = $emptyTopBannerForm.prop('outerHTML');
             const regex = /top_banners-(\d+)-/g;
@@ -351,7 +347,7 @@
 
             $wrappers.eq(0).find('.mt-3').append($compiledBannerForm);
 
-            $('#id_top_banners-TOTAL_FORMS').attr('value', count + 1);
+            $totalForms.attr('value', count + 1);
 
             $wrappers.first().animate({
                 scrollLeft: $wrappers.eq(0).prop('scrollWidth')
@@ -359,19 +355,14 @@
         });
 
         $(document).on('click', '.delete-advertisement-banner-button', function () {
-            const count = $wrappers.eq(1).find('.mt-3 .card').length;
-
             const $card = $(this).closest('.card');
-
             $card.find('input[type="checkbox"]').prop('checked', true);
-
-            $('#id_advertisement_banners-TOTAL_FORMS').attr('value', count - 1);
-
             $card.hide();
         });
 
         $(document).on('click', '.add-advertisement-banner-button', function () {
-            const count = $wrappers.eq(1).find('.mt-3 .card').length;
+            const $totalForms = $('#id_advertisement_banners-TOTAL_FORMS');
+            const count = parseInt($totalForms.val());
 
             const $bannerFormMarkup = $emptyAdvertisementBannerForm.prop('outerHTML');
             const regex = /advertisement_banners-(\d+)-/g;
@@ -379,7 +370,7 @@
 
             $wrappers.eq(1).find('.mt-3').append($compiledBannerForm);
 
-            $('#id_advertisement_banners-TOTAL_FORMS').attr('value', count + 1);
+            $totalForms.attr('value', count + 1);
 
             $wrappers.eq(1).animate({
                 scrollLeft: $wrappers.eq(1).prop('scrollWidth')
