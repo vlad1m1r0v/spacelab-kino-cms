@@ -34,6 +34,16 @@ textarea {
     transform: translate(50%, -50%);
 }
 
+.inside-horizontal-scrolling-wrapper {
+    margin-right: 1rem;
+}
+
+.inside-horizontal-scrolling-wrapper:last-child {
+    margin-right: 0;
+}
+
+
+
 .skeleton {
     animation: skeleton-loading 1s linear infinite alternate;
 }

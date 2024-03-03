@@ -96,7 +96,7 @@
                         <div class="mt-3">
                             {{ formset.management_form }}
                             {% for form in formset %}
-                                <div class="card border mx-2 banner-card">
+                                <div class="card border banner-card inside-horizontal-scrolling-wrapper">
                                     {{ form.id }}
                                     <div class="card-body p-2">
                                         {% if form.image.value is None %}
@@ -235,7 +235,7 @@
                         <div class="mt-3">
                             {{ formset.management_form }}
                             {% for form in formset %}
-                                <div class="card border mx-2 banner-card">
+                                <div class="card border banner-card inside-horizontal-scrolling-wrapper">
                                     {{ form.id }}
                                     <div class="card-body p-2">
                                         {% if form.image.value is None %}
