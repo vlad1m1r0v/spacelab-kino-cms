@@ -8,3 +8,13 @@ class AbstractBaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class AbstractSeoModel(AbstractBaseModel):
+    seo_url = models.URLField()
+    seo_title = models.CharField()
+    seo_keywords = models.CharField()
+    seo_description = models.TextField()
+
+    class Meta:
+        abstract = True

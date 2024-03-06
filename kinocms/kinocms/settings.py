@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'locations',
     'banners',
     'adminlte',
+    'films',
     'cloudinary'
 ]
 

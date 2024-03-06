@@ -1,0 +1,247 @@
+{% extends "panel/base.html" %}
+{% block title %}
+    Films
+{% endblock %}
+{% block head %}
+    <style>
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 5px 5px 0 0;
+            height: 15rem;
+        }
+
+        .btn-group {
+            display: flex;
+        }
+
+        .btn {
+            flex: 1;
+        }
+
+        .film-card {
+            width: 15rem;
+        }
+    </style>
+{% endblock head %}
+{% block content %}
+    <!--Now in cinemas-->
+    <div class="card">
+        <div class="card-header pb-1 pl-2">
+            <h5>Now in cinemas</h5>
+        </div>
+        <div class="card-body d-flex flex-wrap p-2 justify-content-center">
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Upcoming films-->
+    <div class="card">
+        <div class="card-header pb-1 pl-2">
+            <h5>Upcoming films</h5>
+        </div>
+        <div class="card-body d-flex flex-wrap p-2 justify-content-center">
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <p class="mb-2">Spider-Man</p>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">
+                            <i class="fa fa-pen" aria-hidden="true"></i>
+                            Edit
+                        </button>
+                        <button type="button" class="btn btn-danger">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

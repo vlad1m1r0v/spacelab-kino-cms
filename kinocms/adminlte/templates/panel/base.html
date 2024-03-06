@@ -118,6 +118,14 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{% url 'films:index' %}" class="nav-link">
+                            <i class="nav-icon fas fa-film"></i>
+                            <p>
+                                Films
+                            </p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -168,10 +176,10 @@
 <!--Highlight active nav item-->
 <script>
     $(document).ready(function () {
-        const currentPath = window.location.pathname;
+        const current = window.location.pathname.split('/')[2];
         $('.nav-item a').each(function () {
-            const linkPath = $(this).attr('href');
-            if (linkPath === currentPath) {
+            const path = $(this).attr('href').split('/')[2];
+            if (current === path) {
                 $(this).addClass('active');
             }
         });
