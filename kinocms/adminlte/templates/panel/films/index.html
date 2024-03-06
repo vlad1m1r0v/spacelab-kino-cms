@@ -37,8 +37,8 @@
 {% block content %}
     <!--Now in cinemas-->
     <div class="card">
-        <div class="card-header pb-1 pl-2">
-            <h5>Now in cinemas</h5>
+        <div class="card-header p-2">
+            Now in cinemas
         </div>
         <div class="card-body d-flex flex-wrap p-2 justify-content-center">
             <div class="card film-card m-1">
@@ -52,15 +52,111 @@
                         <li class="list-group-item"><p class="mb-0">Spider-Man</p></li>
                         <li class="list-group-item">
                             <div class="btn-group">
-                        <button type="button" class="btn btn-primary w-100">
-                            <i class="fa fa-pen" aria-hidden="true"></i>
-                            Edit
-                        </button>
-                        <button type="button" class="btn btn-danger w-100">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                            Delete
-                        </button>
-                    </div>
+                                <button type="button" class="btn btn-primary w-100">
+                                    <i class="fa fa-pen" aria-hidden="true"></i>
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-danger w-100">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><p class="mb-0">Spider-Man</p></li>
+                        <li class="list-group-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary w-100">
+                                    <i class="fa fa-pen" aria-hidden="true"></i>
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-danger w-100">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><p class="mb-0">Spider-Man</p></li>
+                        <li class="list-group-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary w-100">
+                                    <i class="fa fa-pen" aria-hidden="true"></i>
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-danger w-100">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><p class="mb-0">Spider-Man</p></li>
+                        <li class="list-group-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary w-100">
+                                    <i class="fa fa-pen" aria-hidden="true"></i>
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-danger w-100">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card film-card m-1">
+                <div class="image-container">
+                    <img class="card-img-top"
+                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                         alt="Card image cap">
+                </div>
+                <div class="card-body mt-0 p-2 text-center">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><p class="mb-0">Spider-Man</p></li>
+                        <li class="list-group-item">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary w-100">
+                                    <i class="fa fa-pen" aria-hidden="true"></i>
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-danger w-100">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    Delete
+                                </button>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -70,10 +166,15 @@
 
     <!--Upcoming films-->
     <div class="card">
-        <div class="card-header pb-1 pl-2">
-            <h5>Upcoming films</h5>
+        <div class="card-header p-2">
+            Upcoming films
         </div>
         <div class="card-body d-flex flex-wrap p-2 justify-content-center">
         </div>
     </div>
+
+    <a href="{% url 'films:create' %}" class="btn btn-primary btn-success add-film-button">
+        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        Add film
+    </a>
 {% endblock %}

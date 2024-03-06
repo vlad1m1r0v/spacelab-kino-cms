@@ -2,5 +2,238 @@
 {% block title %}
     Create film
 {% endblock %}
+{% block head %}
+    <style>
+        .preview-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 5px;
+            height: 20rem;
+            margin-bottom: 7px;
+        }
+
+        .main-image {
+            width: 40%;
+        }
+
+        .film-image {
+            width: 100%;
+        }
+
+    </style>
+{% endblock head %}
 {% block content %}
+    <div class="card">
+        <div class="card-header p-2">
+            Film
+        </div>
+        <div class="card-body p-2">
+            <ul class="nav nav-tabs mb-2">
+                <li class="nav-item ml-auto">
+                    <a class="nav-link">English</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Українська</a>
+                </li>
+            </ul>
+            <form>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="film-name-span">Film name</span>
+                    </div>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter film name"
+                           aria-label="film-name-label"
+                           aria-describedby="fime-name-span">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="film-description-span">Film Description</span>
+                    </div>
+                    <textarea class="form-control"
+                              aria-label="film-description-label"
+                              aria-describedby="film-description-span"
+                              placeholder="Enter description"></textarea>
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="fime-trailer-span">Trailer URL</span>
+                    </div>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter trailer URL"
+                           aria-label="film-trailer-label"
+                           aria-describedby="fime-trailer-span">
+                </div>
+                <h5 class="ml-2 mt-3">Main image</h5>
+                <div class="card border main-image">
+                    <div class="card-body p-2">
+                        <div class="preview-image">
+                            <img class="film-image"
+                                 src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                                 alt="film image">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input">
+                                <label class="custom-file-label">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="ml-2 mt-3">Image gallery</h5>
+                <p class="ml-2 mb-0">Size: 1000 × 190</p>
+                <div class="scrolling-wrapper">
+                    <div class="mt-3">
+                        {% for i in '0123456789'|make_list %}
+                            <div class="card border inside-horizontal-scrolling-wrapper">
+                                <div class="card-body p-2">
+                                    <div class="preview-image">
+                                        <img class="film-image"
+                                             src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
+                                             alt="film image">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input">
+                                            <label class="custom-file-label">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button"
+                                        class="btn btn-sm btn-primary btn-danger btn-circle btn-corner delete-top-banner-button">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="d-flex flex-row mb-2">
+                    <div class="ml-2 mr-4"><h5 class="mb-1">Cinema type</h5></div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="" id="checkbox1">
+                        <label class="form-check-label" for="checkbox1">3D</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="" id="checkbox2">
+                        <label class="form-check-label" for="checkbox2">2D</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="" id="checkbox3">
+                        <label class="form-check-label" for="checkbox3">IMAX</label>
+                    </div>
+                </div>
+                <h5 class="ml-2 mb-1">SEO Block</h5>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="film-seo-url-span">URL</span>
+                    </div>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter SEO URL"
+                           aria-label="film-seo-url-label"
+                           aria-describedby="fime-seo-url-span">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="film-seo-title-span">Title</span>
+                    </div>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter SEO title"
+                           aria-label="film-seo-title-label"
+                           aria-describedby="fime-seo-title-span">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="film-seo-keywords-span">Keywords</span>
+                    </div>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter SEO keywords"
+                           aria-label="film-seo-keywords-label"
+                           aria-describedby="fime-seo-keywords-span">
+                </div>
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="film-seo-description-span">Description</span>
+                    </div>
+                    <textarea class="form-control"
+                              aria-label="film-seo-description-label"
+                              aria-describedby="film-seo-description-span"
+                              placeholder="Enter SEO description"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
+
+{% block script %}
+    <script>
+        const $wrappers = $('.scrolling-wrapper');
+
+
+        $wrappers.each(function () {
+            let isDown = false;
+            let startX;
+            let startY;
+            let scrollLeft;
+            let scrollTop;
+
+            $(this).on('mousedown', function (e) {
+                isDown = true;
+                startX = e.pageX;
+                startY = e.pageY;
+                scrollLeft = $(this).scrollLeft();
+                scrollTop = $(this).scrollTop();
+                $(this).css('cursor', 'grabbing');
+            });
+
+            $(this).on('mouseleave mouseup', function () {
+                isDown = false;
+                $(this).css('cursor', 'grab');
+            })
+
+            const $wrapper = this;
+
+            $(document).on('mousemove', function (e) {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - $wrapper.offsetLeft;
+                const y = e.pageY - $wrapper.offsetTop;
+                const walkX = x - startX;
+                const walkY = y - startY;
+                $wrapper.scrollLeft = scrollLeft - walkX;
+                $wrapper.scrollTop = scrollTop - walkY;
+            });
+        })
+
+        $(document).on('click', '.delete-top-banner-button', function () {
+            const $card = $(this).closest('.card');
+            $card.find('input[type="checkbox"]').prop('checked', true);
+            $card.hide();
+        });
+
+        $(document).on('click', '.add-top-banner-button', function () {
+            const $totalForms = $('#id_top_banners-TOTAL_FORMS');
+
+            const count = parseInt($totalForms.val());
+
+            const $bannerFormMarkup = $emptyTopBannerForm.prop('outerHTML');
+            const regex = /top_banners-(\d+)-/g;
+            const $compiledBannerForm = $bannerFormMarkup.replace(regex, `top_banners-${count}-`);
+
+            $wrappers.eq(0).find('.mt-3').append($compiledBannerForm);
+
+            $totalForms.attr('value', count + 1);
+
+            $wrappers.first().animate({
+                scrollLeft: $wrappers.eq(0).prop('scrollWidth')
+            }, 500);
+        });
+    </script>
+{% endblock script %}
