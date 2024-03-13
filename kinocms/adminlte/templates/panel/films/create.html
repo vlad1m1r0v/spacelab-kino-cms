@@ -30,6 +30,10 @@
             height: 4rem;
         }
 
+        .preview-main-image {
+            aspect-ratio: 3/4;
+        }
+
         .main-image-container {
             display: flex;
             justify-content: center;
@@ -76,7 +80,7 @@
                 </li>
             </ul>
             <form action="{% url 'films:create' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+                {% csrf_token %}
                 <!--General Information-->
                 <h5 class="ml-2">General information</h5>
                 <div class="input-group mb-2 en">
@@ -115,11 +119,8 @@
                 <div class="main-image-container">
                     <div class="card border">
                         <div class="card-body p-2">
-                            <div class="preview-image">
-                                <img class="main-image"
-                                     src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
-                                     alt="film image">
-                            </div>
+                            <div class="main-image"></div>
+                            <div class="preview-image preview-main-image skeleton"></div>
                             <div class="input-group mb-3">
                                 <span class="custom-file">
                                     {{ form.image }}
@@ -138,17 +139,14 @@
                 <p class="ml-2 mb-0">Size: 1000 × 190</p>
                 <div class="scrolling-wrapper">
                     <div class="mt-3">
-                        {% for i in '0123456789'|make_list %}
+                        {% for form in formset %}
+                            {{ formset.management_form }}
                             <div class="card border inside-horizontal-scrolling-wrapper">
                                 <div class="card-body p-2">
-                                    <div class="preview-image preview-film-image">
-                                        <img class="film-image"
-                                             src="https://64.media.tumblr.com/801b04a5f1d2d44bc19b46412c7d02a1/0c938f46df006fc4-53/s1280x1920/e52ed6572312051bca4b98b97a628f0483ab048a.jpg"
-                                             alt="film image">
-                                    </div>
+                                    <div class="preview-image preview-film-image skeleton"></div>
                                     <div class="input-group mb-3">
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input">
+                                            {{ form.image }}
                                             <label class="custom-file-label">Choose file</label>
                                         </div>
                                     </div>
@@ -161,8 +159,15 @@
                         {% endfor %}
                     </div>
                 </div>
+                <div class="film-form-buttons">
+                    <button type="button"
+                            class="btn btn-primary btn-info add-top-banner-button">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        Add form
+                    </button>
+                </div>
                 <!--Cinema Type-->
-                <div class="d-flex flex-row mb-2">
+                <div class="d-flex flex-row mb-2 mt-3">
                     <div class="ml-2 mr-4 pt-1"><h5 class="mb-1">Cinema type</h5></div>
                     <div class="form-check form-check-inline">
                         {{ form.is_3d }}

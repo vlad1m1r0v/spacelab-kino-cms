@@ -95,7 +95,7 @@ class FilmImageForm(forms.ModelForm):
         model = FilmImage
         fields = ["image"]
         widgets = {
-            "image": forms.FileInput()
+            "image": forms.FileInput(attrs={"class": "form-control custom-file-input", "type": "file"}),
         }
 
 
