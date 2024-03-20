@@ -97,8 +97,6 @@ class CreateFilmView(CreateView):
             film = form.save(commit=True)
             formset.save(commit=True)
 
-
-
             messages.success(request, "Film was created successfully")
             return redirect('films:index')
 
