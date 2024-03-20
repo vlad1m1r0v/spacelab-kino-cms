@@ -95,7 +95,11 @@ class CreateFilmView(CreateView):
 
         if form.is_valid() and formset.is_valid():
             film = form.save(commit=True)
-            formset.save(commit=True)
+            images = formset.save(commit=False)
+
+            for image in images:
+                image.film = film
+                image.save()
 
             messages.success(request, "Film was created successfully")
             return redirect('films:index')
