@@ -28,12 +28,8 @@ class EditFilmView(TemplateView):
         formset = FilmImageFormSet(request.POST, request.FILES, instance=film)
 
         if form.is_valid() and formset.is_valid():
-            film = form.save()
-            film.save()
-
-            for form in formset:
-                if form.is_valid():
-                    form.save()
+            form.save(commit=True)
+            formset.save(commit=True)
 
             messages.success(request, "Film was edited successfully")
             return redirect('films:index')
@@ -98,14 +94,10 @@ class CreateFilmView(CreateView):
         formset = FilmImageFormSet(request.POST, request.FILES)
 
         if form.is_valid() and formset.is_valid():
-            film = form.save()
-            film.save()
+            film = form.save(commit=True)
+            formset.save(commit=True)
 
-            for form in formset:
-                if form.is_valid():
-                    film_image = form.save(commit=False)
-                    film_image.film = film
-                    film_image.save()
+
 
             messages.success(request, "Film was created successfully")
             return redirect('films:index')

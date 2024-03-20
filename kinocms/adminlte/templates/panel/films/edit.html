@@ -174,7 +174,8 @@
                 </div>
                 <div class="film-form-buttons">
                     <button type="button"
-                            class="btn btn-primary btn-info add-film-image-button">
+                            class="btn btn-primary btn-info"
+                            id="add-film-image-button">
                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                         Add form
                     </button>
@@ -293,14 +294,14 @@
             }
         });
 
-        $('input, textarea').each(function () {
+        $("input[type='text'], input[type='url'], textarea").each(function () {
             $(this).attr('data-initial', $(this).val());
         });
 
         $("#reset-form-button").click(function (e) {
             e.preventDefault();
 
-            $('input, textarea').each(function () {
+            $("input[type='text'], input[type='url'], textarea").each(function () {
                 const initial = $(this).attr('data-initial');
                 $(this).val(initial);
             });
@@ -319,10 +320,6 @@
             $preview.children().remove();
 
             $preview.removeClass('skeleton');
-
-            const classes = $preview.attr("class");
-
-            console.log({classes});
 
             const $image = $(`<img src=${src} alt="image">`);
 
@@ -347,11 +344,11 @@
 
         $(document).on('click', '.delete-film-image-button', function () {
             const $card = $(this).closest('.card');
-            $card.find('input[type="checkbox"]').prop('checked', true);
+                $card.find('input[type="checkbox"]').attr('checked', true);
             $card.hide();
         })
 
-        $('.add-film-image-button').click(function () {
+        $('#add-film-image-button').click(function () {
             const $totalForms = $('#id_filmimage_set-TOTAL_FORMS');
             const count = parseInt($totalForms.val());
 
