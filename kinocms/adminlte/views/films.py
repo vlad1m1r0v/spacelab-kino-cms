@@ -38,8 +38,6 @@ class EditFilmView(TemplateView):
             messages.success(request, "Film was edited successfully")
             return redirect('films:index')
 
-        print({"form errors": form.errors, "formset errors": formset.errors})
-        print({"form non field errors": form.non_field_errors, "formset non field errors": formset.non_form_errors()})
         messages.error(request, "Some errors occurred while editing film")
         return self.render_to_response(self.get_context_data(form=form, formset=formset, film=film))
 
