@@ -15,14 +15,25 @@
             }
         }
 
+        .main-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         .preview-image {
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             border-radius: 5px;
-            height: 100%;
+            width: 100%;
             margin-bottom: 7px;
+        }
+
+        .preview-main-image {
+            aspect-ratio: 3/4;
+            max-width: 100%;
         }
 
         .preview-film-image {
@@ -30,21 +41,6 @@
             height: 4rem;
         }
 
-        .preview-main-image {
-            aspect-ratio: 3/4;
-        }
-
-        .main-image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-
-        .main-image, .film-image {
-            width: 100%;
-            height: auto;
-        }
 
         .film-form-buttons {
             display: flex;
@@ -119,14 +115,16 @@
                 <div class="main-image-container">
                     <div class="card border">
                         <div class="card-body p-2">
-                            <div class="main-image"></div>
-                            <div class="preview-image preview-main-image skeleton"></div>
+                            <div class="preview-image preview-main-image skeleton">
+                            </div>
                             <div class="input-group mb-3">
-                                <span class="custom-file">
+                                <div class="custom-file">
+                                    <label class="custom-file-label" for="{{ form.image.auto_id }}">
+                                        Choose file
+                                    </label>
                                     {{ form.image }}
-                                    <label class="custom-file-label">Choose file</label>
-                                </span>
-                                <button id="submit-button" class="btn btn-info ml-2">
+                                </div>
+                                <button class="btn btn-info ml-2" id="reset-image-button">
                                     <i class="fa fa-minus" aria-hidden="true"></i>
                                     Reset
                                 </button>
@@ -139,17 +137,20 @@
                 <p class="ml-2 mb-0">Size: 1000 × 190</p>
                 <div class="scrolling-wrapper">
                     <div class="mt-3">
+                        {{ formset.management_form }}
                         {% for form in formset %}
-                            {{ formset.management_form }}
                             <div class="card border inside-horizontal-scrolling-wrapper">
                                 <div class="card-body p-2">
                                     <div class="preview-image preview-film-image skeleton"></div>
                                     <div class="input-group mb-3">
                                         <div class="custom-file">
-                                            {{ form.image }}
                                             <label class="custom-file-label">Choose file</label>
+                                            {{ form.image }}
                                         </div>
                                     </div>
+                                </div>
+                                <div style="display: none">
+                                    {{ form.DELETE }}
                                 </div>
                                 <button type="button"
                                         class="btn btn-sm btn-primary btn-danger btn-circle btn-corner delete-film-image-button">
@@ -161,7 +162,7 @@
                 </div>
                 <div class="film-form-buttons">
                     <button type="button"
-                            class="btn btn-primary btn-info add-top-banner-button">
+                            class="btn btn-primary btn-info add-film-image-button">
                         <i class="fa fa-plus-circle" aria-hidden="true"></i>
                         Add form
                     </button>
@@ -213,7 +214,7 @@
                         <i class="fa fa-bookmark" aria-hidden="true"></i>
                         Save
                     </button>
-                    <button class="btn btn-info">
+                    <button class="btn btn-info" id="reset-form-button">
                         <i class="fa fa fa-minus" aria-hidden="true"></i>
                         Reset
                     </button>
@@ -226,7 +227,7 @@
 {% block script %}
     <script>
         const $wrappers = $('.scrolling-wrapper');
-
+        const $emptyFilmImageForm = $wrappers.eq(0).find('.mt-3 .card:last-child').clone(true);
 
         $wrappers.each(function () {
             let isDown = false;
@@ -278,6 +279,83 @@
                 $('.uk').show();
                 $('.en').hide();
             }
+        });
+
+        $('input, textarea').each(function () {
+            $(this).attr('data-initial', $(this).val());
+        });
+
+        $("#reset-form-button").click(function (e) {
+            e.preventDefault();
+
+            $('input, textarea').each(function () {
+                const initial = $(this).attr('data-initial');
+                $(this).val(initial);
+            });
+        })
+
+        $(document).on('change', 'input:file', function (e) {
+            $(this).prev().html($(this).val().split('\\').pop());
+
+            const image = e.target.files[0];
+            const src = URL.createObjectURL(image);
+
+            const $cardBody = $(this).closest('.card-body');
+
+            const $preview = $cardBody.find('.preview-image');
+
+            $preview.children().remove();
+
+            $preview.removeClass('skeleton');
+
+            const classes = $preview.attr("class");
+
+            console.log({classes});
+
+            const $image = $(`<img src=${src} alt="image">`);
+
+            $image.attr("class", classes);
+
+            $image.removeClass("preview-film-image")
+
+            $preview.append($image);
+        });
+
+        $("#reset-image-button").click(function (e) {
+            e.preventDefault();
+
+            const $cardBody = $(this).closest('.card-body');
+            const $preview = $cardBody.find('.preview-image');
+            const $fileInput = $cardBody.find('input:file');
+
+            $fileInput.val(null);
+            $fileInput.siblings('.custom-file-label').text("Choose file");
+
+            $preview.children().remove();
+            $preview.addClass('skeleton');
+        })
+
+        $(document).on('click', '.delete-film-image-button', function () {
+            const $card = $(this).closest('.card');
+            $card.find('input[type="checkbox"]').prop('checked', true);
+            $card.hide();
+        })
+
+        $('.add-film-image-button').click(function () {
+            const $totalForms = $('#id_filmimage_set-TOTAL_FORMS');
+            const count = parseInt($totalForms.val());
+
+            const $filmImageFormMarkup = $emptyFilmImageForm.prop('outerHTML');
+            const regex = /filmimage_set-0-(\d+)-/g;
+            const $compiledFilmImageForm = $filmImageFormMarkup.replace(regex, `filmimage_set-0-${count}-`);
+
+            $wrappers.eq(0).find('.mt-3').append($compiledFilmImageForm);
+
+            $totalForms.attr('value', count + 1);
+
+            $wrappers.eq(0).animate({
+                scrollLeft: $wrappers.eq(0).prop('scrollWidth')
+            }, 500);
         });
     </script>
 {% endblock script %}
