@@ -85,10 +85,12 @@
                             <li class="list-group-item"><p class="mb-0">{{ film.name_en }}</p></li>
                             <li class="list-group-item">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary w-100">
+                                    <a type="button"
+                                            class="btn btn-primary w-100"
+                                            href="{% url 'films:edit' film_id=film.id %}">
                                         <i class="fa fa-pen" aria-hidden="true"></i>
                                         Edit
-                                    </button>
+                                    </a>
                                     <a type="button"
                                        href="{% url 'films:delete' film_id=film.id %}"
                                        class="btn btn-danger w-100 delete-film-button"
@@ -122,10 +124,12 @@
                             <li class="list-group-item"><p class="mb-0">{{ film.name_en }}</p></li>
                             <li class="list-group-item">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-primary w-100">
+                                    <a type="button"
+                                       class="btn btn-primary w-100"
+                                       href="{% url 'films:edit' film_id=film.id %}">
                                         <i class="fa fa-pen" aria-hidden="true"></i>
                                         Edit
-                                    </button>
+                                    </a>
                                     <a type="button"
                                        href="{% url 'films:delete' film_id=film.id %}"
                                        class="btn btn-danger w-100 delete-film-button"

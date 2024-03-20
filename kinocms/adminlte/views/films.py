@@ -3,13 +3,50 @@ from datetime import date
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView, CreateView
 
 from adminlte.decorators import admin_only
 from adminlte.forms.films import FilmForm, FilmImageFormSet
 from films.models import Film
+
+
+@admin_only
+class EditFilmView(TemplateView):
+    template_name = "panel/films/edit.html"
+
+    def get(self, request, film_id):
+        film = get_object_or_404(Film, pk=film_id)
+        form = FilmForm(instance=film)
+        formset = FilmImageFormSet(instance=film)
+        return self.render_to_response(self.get_context_data(form=form, formset=formset, film=film))
+
+    def post(self, request, film_id):
+        film = get_object_or_404(Film, pk=film_id)
+        form = FilmForm(request.POST, request.FILES, instance=film)
+        formset = FilmImageFormSet(request.POST, request.FILES, instance=film)
+
+        if form.is_valid() and formset.is_valid():
+            film = form.save()
+            film.save()
+
+            for form in formset:
+                if form.is_valid():
+                    form.save()
+
+            messages.success(request, "Film was edited successfully")
+            return redirect('films:index')
+
+        print({"form errors": form.errors, "formset errors": formset.errors})
+        print({"form non field errors": form.non_field_errors, "formset non field errors": formset.non_form_errors()})
+        messages.error(request, "Some errors occurred while editing film")
+        return self.render_to_response(self.get_context_data(form=form, formset=formset, film=film))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(kwargs)
+        return context
 
 
 @admin_only
