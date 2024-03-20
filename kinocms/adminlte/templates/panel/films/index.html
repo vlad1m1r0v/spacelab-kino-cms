@@ -3,6 +3,7 @@
     Films
 {% endblock %}
 {% block head %}
+    {% load cloudinary %}
     <style>
         .grid-container {
             display: grid;
@@ -16,6 +17,7 @@
         }
 
         .image-container {
+            position: relative; /* This is the key change */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,9 +26,13 @@
             height: 100%;
         }
 
-        .image {
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            width: auto;
+            object-fit: cover;
         }
 
         .btn-group {
@@ -69,32 +75,34 @@
             Now in cinemas
         </div>
         <div class="card-body grid-container p-2">
-                        {% for i in '0123456789'|make_list %}
-                            <div class="card film-card">
-                                <div class="image-container">
-                                    <img class="card-img-top image"
-                                         src="https://static.wikia.nocookie.net/spiderman-films/images/f/fe/Spider-Man_%28Andrew_Garfield%29_Profile_Pic.png/revision/latest?cb=20211223001405"
-                                         alt="Card image cap">
+            {% for film in current_films %}
+                <div class="card film-card">
+                    <div class="image-container">
+                        {% cloudinary film.image.value class="card-img-top image" %}
+                    </div>
+                    <div class="card-body mt-0 text-center p-2">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><p class="mb-0">{{ film.name_en }}</p></li>
+                            <li class="list-group-item">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary w-100">
+                                        <i class="fa fa-pen" aria-hidden="true"></i>
+                                        Edit
+                                    </button>
+                                    <a type="button"
+                                       href="{% url 'films:delete' film_id=film.id %}"
+                                       class="btn btn-danger w-100 delete-film-button"
+                                       data-toggle="modal"
+                                       data-target="#confirmationModal">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        Delete
+                                    </a>
                                 </div>
-                                <div class="card-body mt-0 text-center p-2">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><p class="mb-0">Spider-Man</p></li>
-                                        <li class="list-group-item">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-primary w-100">
-                                                    <i class="fa fa-pen" aria-hidden="true"></i>
-                                                    Edit
-                                                </button>
-                                                <button type="button" class="btn btn-danger w-100">
-                                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        {% endfor %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
@@ -103,7 +111,35 @@
         <div class="card-header p-2">
             Upcoming films
         </div>
-        <div class="card-body d-flex flex-wrap p-2 justify-content-center">
+        <div class="card-body grid-container p-2">
+            {% for film in upcoming_films %}
+                <div class="card film-card">
+                    <div class="image-container">
+                        {% cloudinary film.image class="card-img-top" %}
+                    </div>
+                    <div class="card-body mt-0 text-center p-2">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><p class="mb-0">{{ film.name_en }}</p></li>
+                            <li class="list-group-item">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary w-100">
+                                        <i class="fa fa-pen" aria-hidden="true"></i>
+                                        Edit
+                                    </button>
+                                    <a type="button"
+                                       href="{% url 'films:delete' film_id=film.id %}"
+                                       class="btn btn-danger w-100 delete-film-button"
+                                       data-toggle="modal"
+                                       data-target="#confirmationModal">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        Delete
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
     <div class="add-film-button-container">
@@ -112,4 +148,36 @@
             Add film
         </a>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirmation window</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete film?
+                </div>
+                <form method="post" id="delete-film-form">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
+{% block script %}
+    <script>
+        $(document).on('click', '.delete-film-button', function () {
+                $('#delete-film-form').attr('action', $(this).attr('href'))
+            }
+        )
+    </script>
+{% endblock script %}

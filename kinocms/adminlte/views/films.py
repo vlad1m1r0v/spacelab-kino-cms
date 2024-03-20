@@ -1,14 +1,44 @@
+from datetime import date
+
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.shortcuts import redirect
+from django.views import View
 from django.views.generic import TemplateView, CreateView
 
 from adminlte.decorators import admin_only
 from adminlte.forms.films import FilmForm, FilmImageFormSet
+from films.models import Film
+
+
+@admin_only
+class DeleteFilmView(View):
+    def post(self, request, film_id):
+        try:
+            Film.objects.filter(pk=film_id).delete()
+            messages.success(request, "Film was successfully deleted")
+        except ObjectDoesNotExist:
+            messages.success(request, "Object does not exist")
+        return redirect("films:index")
 
 
 @admin_only
 class FilmsView(TemplateView):
     template_name = "panel/films/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        current_films = films = Film.objects.filter(
+            Q(release_date__lte=date.today()) & Q(end_date__gte=date.today()),
+        ).values('id', 'name_en', 'image')
+        context['current_films'] = current_films
+
+        upcoming_films = Film.objects.filter(release_date__gt=date.today()).values('id', 'name_en', 'image')
+        context['upcoming_films'] = upcoming_films
+
+        return context
 
 
 @admin_only
