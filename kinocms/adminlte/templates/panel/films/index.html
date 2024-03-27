@@ -78,7 +78,7 @@
             {% for film in current_films %}
                 <div class="card film-card">
                     <div class="image-container">
-                        {% cloudinary film.image.value class="card-img-top image" %}
+                        {% cloudinary film.image class="card-img-top image" %}
                     </div>
                     <div class="card-body mt-0 text-center p-2">
                         <ul class="list-group list-group-flush">
