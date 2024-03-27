@@ -1,8 +1,8 @@
-from datetime import date
+from datetime import date, timedelta
 
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
+from django.db.models import Q, Expression, F, Sum
 from django.shortcuts import redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView, CreateView
@@ -61,12 +61,19 @@ class FilmsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        current_films = films = Film.objects.filter(
-            Q(release_date__lte=date.today()) & Q(end_date__gte=date.today()),
+        today = date.today()
+
+        current_films = Film.objects.annotate(
+            release_date=F('created_at') + timedelta(days=7),
+            end_date=F('created_at') + timedelta(days=30),
+        ).filter(
+            Q(release_date__lte=today) & Q(end_date__gte=today),
         ).values('id', 'name_en', 'image')
         context['current_films'] = current_films
 
-        upcoming_films = Film.objects.filter(release_date__gt=date.today()).values('id', 'name_en', 'image')
+        upcoming_films = Film.objects.annotate(
+            release_date=F('created_at') + timedelta(days=7),
+        ).filter(release_date__gt=today).values('id', 'name_en', 'image')
         context['upcoming_films'] = upcoming_films
 
         return context

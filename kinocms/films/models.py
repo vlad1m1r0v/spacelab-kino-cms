@@ -17,8 +17,6 @@ class Film(AbstractSeoModel):
     is_3d = models.BooleanField(default=False)
     is_2d = models.BooleanField(default=False)
     is_imax = models.BooleanField(default=False)
-    release_date = models.DateField(default=date.today() + timedelta(days=7))
-    end_date = models.DateField(default=date.today() + timedelta(days=30))
 
 
 class FilmImage(AbstractBaseModel):
