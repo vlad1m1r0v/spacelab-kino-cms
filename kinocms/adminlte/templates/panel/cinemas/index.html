@@ -1,10 +1,146 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "panel/base.html" %}
+{% block title %}
+    Cinemas
+{% endblock title %}
+{% block head %}
+    {% load cloudinary %}
+    <style>
+        .grid-container {
+            display: grid;
+            gap: 0.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        }
 
-</body>
-</html>
+        .grid-container .card {
+            margin-bottom: 0;
+            aspect-ratio: 1;
+        }
+
+        .image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 5px 5px 0 0;
+            height: 100%;
+        }
+
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .btn-group {
+            display: flex;
+        }
+
+        .btn {
+            flex: 1;
+        }
+
+        .list-group-item {
+            padding: 0.5rem 0;
+        }
+
+        .list-group-item:first-child {
+            padding: 0;
+        }
+
+        .cinema-card {
+            width: 100%;
+            align-self: center;
+        }
+
+        .add-cinema-button-container {
+            text-align: right;
+        }
+
+        @media (max-width: 576px) {
+            .add-cinema-button-container {
+                text-align: left;
+            }
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-header p-2">
+            Cinemas
+        </div>
+        <div class="card-body grid-container p-2">
+            {% for cinema in cinemas %}
+                <div class="card cinema-card">
+                    <div class="image-container">
+                        {% cloudinary cinema.logo class="card-img-top image" %}
+                    </div>
+                    <div class="card-body mt-0 text-center p-2">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><p class="mb-0">{{ cinema.name_en }}</p></li>
+                            <li class="list-group-item">
+                                <div class="btn-group">
+                                    <a type="button"
+                                       class="btn btn-primary w-100"
+                                    >
+                                        <i class="fa fa-pen" aria-hidden="true"></i>
+                                        Edit
+                                    </a>
+                                    <a type="button"
+                                       href="{% url 'cinemas:delete' cinema_id=cinema.id %}"
+                                       class="btn btn-danger w-100 delete-cinema-button"
+                                       data-toggle="modal"
+                                       data-target="#confirmationModal">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        Delete
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="add-cinema-button-container">
+        <a href="{% url 'cinemas:create' %}" class="btn btn-primary btn-success">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            Add cinema
+        </a>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirmation window</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete cinema?
+                </div>
+                <form method="post" id="delete-cinema-form">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block script %}
+    <script>
+        $(document).on('click', '.delete-cinema-button', function () {
+                $('#delete-cinema-form').attr('action', $(this).attr('href'))
+            }
+        )
+    </script>
+{% endblock script %}

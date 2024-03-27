@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import inlineformset_factory
+
 from cinemas.models import Cinema, CinemaImage
 
 
@@ -95,3 +97,11 @@ class CinemaImageForm(forms.ModelForm):
         }
 
 
+CinemaImageFormSet = inlineformset_factory(
+    parent_model=Cinema,
+    model=CinemaImage,
+    form=CinemaImageForm,
+    can_delete=True,
+    can_delete_extra=True,
+    extra=1,
+)

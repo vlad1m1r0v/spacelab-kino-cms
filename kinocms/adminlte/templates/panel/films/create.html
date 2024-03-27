@@ -267,10 +267,10 @@
 
         $('.uk').hide();
 
-        $('.nav-link').click(function () {
+        $('.card-body .nav-link').click(function () {
             const clickedTabId = $(this).attr('id');
 
-            $('.nav-link').removeClass('active');
+            $('.card-body .nav-link').removeClass('active');
             $(this).addClass('active');
 
             if (clickedTabId === 'tab-en') {
